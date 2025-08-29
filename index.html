@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Step Form</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ===== RESET & BASE STYLES ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      padding-top: 10px; /* Space for fixed progress bar */
+      background-color: #f5f5f5;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .msf-topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: #eef2f6;
+      z-index: 9999;
+    }
+
+    .msf-topbar__fill {
+      height: 100%;
+      width: 0%;
+      background: #fe6337;
+      transition: width 0.25s ease;
+    }
+
+    /* ===== FORM LAYOUT ===== */
+    .form-wrapper {
+      padding: 40px;
+      position: relative;
+      max-width: 800px;
+      background-color: #ffffff;
+      margin: 0 auto;
+      border-radius: 24px;
+    }
+
+    .msf-step {
+      display: none;
+    }
+
+    .msf-step.is-active {
+      display: block;
+    }
+
+    /* ===== HEADER ===== */
+    .msf-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      margin: 0 0 12px;
+    }
+
+    .msf-header .msf-btn.back {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .msf-header__logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      opacity: 0.9;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .msf-nav {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 16px 0 8px 0;
+    }
+
+    /* ===== BUTTONS ===== */
+    .msf-btn {
+      appearance: none;
+      border: 1px solid #d0d7de;
+      background: #fff;
+      color: #24292f;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font: 600 14px/1 system-ui;
+      cursor: pointer;
+      transition: transform 0.02s ease;
+    }
+
+    .msf-btn:active {
+      transform: translateY(1px);
+    }
+
+    .msf-btn[disabled] {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .msf-btn.primary {
+      background: #fe6337;
+      color: #fff;
+      border-color: #fe6337;
+      display: block;
+      width: 100%;
+      height: 40px;
+    }
+
+    .msf-btn.primary[disabled] {
+      background: #a8a8a8;
+      border-color: #a8a8a8;
+      color: #fff;
+    }
+
+    .msf-btn.back {
+      background: #fff;
+    }
+
+    .msf-btn.back::before {
+      content: '←';
+      margin-right: 6px;
+    }
+
+    .msf-btn.back[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1 {
+      text-align: center;
+      font-size: 20px;
+      color: #313131;
+      margin-top: 40px;
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 600;
+      color: #13828A;
+      text-align: center;
+      padding: 24px 0 12px 0;
+    }
+
+    p {
+      text-align: center;
+      font-size: 14px;
+      color: #808080;
+    }
+
+    /* ===== FORM ELEMENTS ===== */
+    fieldset {
+      max-width: inherit !important;
+    }
+
+    fieldset.form-columns-1 {
+      margin: 32px 0 !important;
+    }
+
+    fieldset.form-columns-2,
+    fieldset.form-columns-3 {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 32px !important;
+    }
+
+    label {
+      padding-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      max-width: inherit !important;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      height: 40px;
+      margin-top: 8px !important;
+    }
+
+    input[type="radio" i] {
+      height: auto !important;
+      width: inherit !important;
+    }
+
+    select {
+      height: 40px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .hs-input {
+      width: 100% !important;
+      padding-left: 16px;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    /* ===== VALIDATION & ERRORS ===== */
+    span.hs-form-required {
+      color: red !important;
+    }
+
+    label.hs-error-msg.hs-main-font-element {
+      color: red;
+      font-size: 12px;
+      padding-top: 6px;
+      position: absolute;
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    li.hs-error-msg {
+      list-style-type: none !important;
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    .msf-submit.actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 1024px) {
+      fieldset.form-columns-2,
+      fieldset.form-columns-3 {
+        flex-direction: column;
+      }
+
+      .hs-form-field {
+        width: 100% !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-wrapper">
+    <!-- Header with Back button and Logo -->
+    <div class="msf-header">
+      <button type="button" class="msf-btn back" id="globalBackBtn">Back</button>
+      <img class="msf-header__logo" alt="Logo" width="240" src="logo-jem.png" />
+    </div>
+
+    <h2>Professional Services Request</h2>
+    <p>We strive to deliver the best service for our customers. In order to do that, we need a little bit more information about the project to best serve you. </p>
+
+    <!-- HubSpot Form -->
+    <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+    <script>
+      hbspt.forms.create({
+        portalId: "20661566",
+        formId: "b1918b8e-61ec-4407-94bd-8c949ebc59a4",
+        region: "na1"
+      });
+    </script>
+  </div>
+
+  <!-- Multi-Step Form Logic -->
+  <script>
+    (() => {
+      const FORM_SELECTOR = '#hsForm_b1918b8e-61ec-4407-94bd-8c949ebc59a4';
+
+      // ===== UTILITY FUNCTIONS =====
+      const isVisible = el => !!(el.offsetParent || el.getClientRects().length);
+      const qsa = (root, sel) => Array.from(root.querySelectorAll(sel));
+
+      // ===== VALIDATION FUNCTIONS =====
+      function isHsFieldWrapperValid(wrapper) {
+        // If it's not visually required (no star), we consider it valid unless native says otherwise
+        const visuallyRequired = !!wrapper.querySelector('.hs-form-required');
+        const controls = qsa(wrapper, 'input, select, textarea');
+
+        // If any control has native required/pattern/min/max, defer to browser for that control
+        for (const c of controls) {
+          if (!isVisible(c) || c.type === 'hidden' || c.disabled) continue;
+          if (c.willValidate && !c.checkValidity()) return false;
+        }
+
+        if (!visuallyRequired) return true;
+
+        // Handle radio/checkbox groups: at least one must be chosen
+        const radios = qsa(wrapper, 'input[type="radio"]');
+        const checkboxes = qsa(wrapper, 'input[type="checkbox"]');
+        const fileInputs = qsa(wrapper, 'input[type="file"]');
+
+        if (radios.length) return radios.some(r => r.checked);
+        if (checkboxes.length) return checkboxes.some(c => c.checked);
+        if (fileInputs.length) return fileInputs.every(f => f.files && f.files.length > 0);
+
+        // For selects/inputs that HubSpot didn't mark with `required` attr but shows a star:
+        const selects = qsa(wrapper, 'select');
+        if (selects.length) return selects.every(s => (s.value || '').trim() !== '');
+
+        const textlikes = controls.filter(c => ['INPUT', 'TEXTAREA'].includes(c.tagName));
+        if (textlikes.length) return textlikes.every(c => (c.value || '').trim() !== '');
+
+        return true;
+      }
+
+      function isStepValid(step) {
+        // 1) Native HTML validity for everything visible
+        const controls = qsa(step, 'input, select, textarea').filter(c => isVisible(c) && c.type !== 'hidden' && !c.disabled);
+        for (const c of controls) {
+          if (c.willValidate && !c.checkValidity()) return false;
+        }
+        // 2) HubSpot "required star" groups (covers radios/files where HS sometimes omits `required`)
+        const wrappers = qsa(step, '.hs-form-field');
+        for (const w of wrappers) {
+          if (!isHsFieldWrapperValid(w)) return false;
+        }
+        return true;
+      }
+
+      function firstInvalidInStep(step) {
+        // Prefer a natively invalid control, otherwise first wrapper failing our HS rule
+        const controls = qsa(step, 'input, select, textarea').filter(c => isVisible(c) && c.type !== 'hidden' && !c.disabled);
+        for (const c of controls) {
+          if (c.willValidate && !c.checkValidity()) return c;
+        }
+        const wrappers = qsa(step, '.hs-form-field');
+        for (const w of wrappers) {
+          if (!isHsFieldWrapperValid(w)) {
+            // Try to return a focusable descendant
+            return w.querySelector('input, select, textarea');
+          }
+        }
+        return null;
+      }
+
+      // ===== STEP BUILDING =====
+      function buildSteps(form) {
+        const steps = [];
+        const kids = Array.from(form.children); // snapshot before we start moving nodes
+        let currentStep = null;
+
+        for (const node of kids) {
+          const isH1Fieldset = node.matches('fieldset') && node.querySelector('.hs-richtext h1');
+          if (isH1Fieldset) {
+            // start a new step
+            currentStep = document.createElement('section');
+            currentStep.className = 'msf-step';
+            const title = node.querySelector('h1')?.textContent?.trim() || 'Step';
+            currentStep.dataset.title = title;
+            form.insertBefore(currentStep, node);
+            steps.push(currentStep);
+          }
+          if (currentStep) {
+            currentStep.appendChild(node); // move original nodes into the step
+          }
+        }
+
+        // Move the submit block (.hs_submit) to the last step and style it
+        const submit = form.querySelector('.hs_submit.actions');
+        if (submit && steps.length) {
+          submit.classList.add('msf-submit', 'actions');
+          steps[steps.length - 1].appendChild(submit);
+        }
+
+        return steps;
+      }
+
+      // ===== NAVIGATION UI =====
+      function addNavUI(form, steps) {
+        // Ensure a single full-width top progress bar exists
+        let topbar = document.getElementById('msf-topbar');
+        if (!topbar) {
+          topbar = document.createElement('div');
+          topbar.id = 'msf-topbar';
+          topbar.className = 'msf-topbar';
+          const fill = document.createElement('div');
+          fill.className = 'msf-topbar__fill';
+          topbar.appendChild(fill);
+          document.body.prepend(topbar);
+        }
+
+        steps.forEach((step, idx) => {
+          // Each step gets Proceed (last step hides Proceed)
+          const nav = document.createElement('div');
+          nav.className = 'msf-nav';
+
+          const next = document.createElement('button');
+          next.type = 'button';
+          next.className = 'msf-btn primary';
+          next.textContent = idx === steps.length - 1 ? 'Next Section' : 'Next Section';
+          // We'll hide it on last step since the submit will be used instead
+          if (idx === steps.length - 1) next.style.display = 'none';
+
+          nav.append(next);
+          step.appendChild(nav);
+
+          // Wire handlers
+          next.addEventListener('click', () => {
+            if (isStepValid(step)) {
+              goTo(idx + 1);
+            } else {
+              // Trigger browser message on the first invalid control
+              const bad = firstInvalidInStep(step);
+              if (bad?.reportValidity) bad.reportValidity();
+              bad?.focus();
+            }
+          });
+
+          // Enable/disable "Proceed" reactively
+          const updateNextState = () => { next.disabled = !isStepValid(step); };
+          step.__updateNextState = updateNextState;
+
+          // Listen to changes in this step
+          qsa(step, 'input, select, textarea').forEach(ctrl => {
+            ['input', 'change', 'blur'].forEach(ev => ctrl.addEventListener(ev, updateNextState));
+          });
+
+          // On last step, we'll ensure native submit remains the only primary action
+          if (idx === steps.length - 1) {
+            // Make sure the form's native submit isn't visible on earlier steps
+            qsa(form, '.hs_submit.actions').forEach(el => el.style.display = '');
+          }
+        });
+
+        // Update the full-width bar fill based on active step
+        function renderProgress(activeIndex) {
+          const topbar = document.getElementById('msf-topbar');
+          if (topbar) {
+            const fill = topbar.querySelector('.msf-topbar__fill');
+            const total = steps.length;
+            const pct = total > 1 ? (activeIndex / (total - 1)) * 100 : 100;
+            fill.style.width = `${pct}%`;
+          }
+        }
+
+        return { renderProgress };
+      }
+
+      // ===== INITIALIZATION =====
+      function init(form) {
+        if (form.__msfInit) return;
+        form.__msfInit = true;
+
+        const steps = buildSteps(form);
+        if (!steps.length) return; // nothing to do
+
+        const { renderProgress } = addNavUI(form, steps);
+
+        let current = 0;
+
+        function show(i) {
+          steps.forEach((s, idx) => {
+            s.classList.toggle('is-active', idx === i);
+          });
+
+          // Toggle submit visibility: only show on last step
+          const submit = form.querySelector('.hs_submit.actions');
+          if (submit) submit.style.display = i === steps.length - 1 ? '' : 'none';
+
+          // Update back/next states for the visible step
+          steps[i].__updateNextState?.();
+
+          // Update global back button state
+          const globalBack = document.getElementById('globalBackBtn');
+          if (globalBack) {
+            globalBack.disabled = i === 0;
+          }
+
+          // Focus the first invalid / first focusable
+          const bad = firstInvalidInStep(steps[i]);
+          const candidate = bad || steps[i].querySelector('input, select, textarea, button');
+          candidate?.focus({ preventScroll: true });
+
+          renderProgress(i);
+          current = i;
+        }
+
+        window.goTo = (i) => {
+          if (i < 0 || i >= steps.length) return;
+          show(i);
+        };
+
+        // Prevent accidental full submit when pressing Enter on earlier steps
+        form.addEventListener('submit', (e) => {
+          if (current < steps.length - 1) {
+            e.preventDefault();
+          }
+        });
+
+        // Initial paint
+        show(0);
+
+        // Wire global Back button in wrapper header
+        const globalBack = document.getElementById('globalBackBtn');
+        if (globalBack) {
+          globalBack.addEventListener('click', () => {
+            if (current > 0) {
+              show(current - 1);
+            }
+          });
+          console.log('Back button wired successfully');
+        } else {
+          console.log('Back button not found');
+        }
+      }
+
+      // ===== AUTO-INITIALIZATION =====
+      const tryInit = () => {
+        const f = document.querySelector(FORM_SELECTOR);
+        if (f) init(f);
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryInit);
+      } else {
+        tryInit();
+      }
+
+      const mo = new MutationObserver(tryInit);
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+    })();
+  </script>
+
+  <!-- Live Server Script (Development Only) -->
+  <script>
+    // <![CDATA[  <-- For SVG support
+    if ('WebSocket' in window) {
+      (function () {
+        function refreshCSS() {
+          var sheets = [].slice.call(document.getElementsByTagName("link"));
+          var head = document.getElementsByTagName("head")[0];
+          for (var i = 0; i < sheets.length; ++i) {
+            var elem = sheets[i];
+            var parent = elem.parentElement || head;
+            parent.removeChild(elem);
+            var rel = elem.rel;
+            if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+              var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+              elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+            }
+            parent.appendChild(elem);
+          }
+        }
+        var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+        var address = protocol + window.location.host + window.location.pathname + '/ws';
+        var socket = new WebSocket(address);
+        socket.onmessage = function (msg) {
+          if (msg.data == 'reload') window.location.reload();
+          else if (msg.data == 'refreshcss') refreshCSS();
+        };
+        if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+          console.log('Live reload enabled.');
+          sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+        }
+      })();
+    } else {
+      console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+    }
+    // ]]>
+  </script>
+</body>
+</html>
+
+
