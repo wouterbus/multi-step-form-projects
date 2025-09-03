@@ -20,7 +20,6 @@
     }
 
     body {
-      padding-top: 10px; /* Space for fixed progress bar */
       background-color: #f5f5f5;
     }
 
@@ -50,7 +49,6 @@
       background-color: #ffffff;
       margin: 0 auto;
       border-radius: 24px;
-      margin-top: 40px;
     }
 
     .msf-step {
@@ -244,8 +242,17 @@
       justify-content: flex-end;
     }
 
+    .banner {
+      background-image: url('/jemsystemcover 1.png');
+      height: 300px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      margin-bottom: -240px;
+    }
+
     /* ===== RESPONSIVE DESIGN ===== */
-    @media (max-width: 1024px) {
+    @media (max-width: 800px) {
       fieldset.form-columns-2,
       fieldset.form-columns-3 {
         flex-direction: column;
@@ -254,11 +261,21 @@
       .hs-form-field {
         width: 100% !important;
       }
+      .form-wrapper {
+        margin: 0 24px;
+      }
+      .banner {
+        margin-bottom: -180px;
+      }
     }
+
   </style>
 </head>
 
 <body>
+  <div class="banner">
+
+  </div>
   <div class="form-wrapper">
     <!-- Header with Back button and Logo -->
     <div class="msf-header">
