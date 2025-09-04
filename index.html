@@ -285,50 +285,39 @@
     (() => {
       const FORM_SELECTOR = '#hsForm_b1918b8e-61ec-4407-94bd-8c949ebc59a4';
 
-      // ===== UTILITY FUNCTIONS =====
       const isVisible = el => !!(el.offsetParent || el.getClientRects().length);
       const qsa = (root, sel) => Array.from(root.querySelectorAll(sel));
 
-      // ===== VALIDATION FUNCTIONS =====
       function isHsFieldWrapperValid(wrapper) {
-        // If it's not visually required (no star), we consider it valid unless native says otherwise
-        const visuallyRequired = !!wrapper.querySelector('.hs-form-required');
+        const required = !!wrapper.querySelector('.hs-form-required');
         const controls = qsa(wrapper, 'input, select, textarea');
 
-        // If any control has native required/pattern/min/max, defer to browser for that control
         for (const c of controls) {
           if (!isVisible(c) || c.type === 'hidden' || c.disabled) continue;
           if (c.willValidate && !c.checkValidity()) return false;
         }
 
-        if (!visuallyRequired) return true;
+        if (!required) return true;
 
-        // Handle radio/checkbox groups: at least one must be chosen
         const radios = qsa(wrapper, 'input[type="radio"]');
-        const checkboxes = qsa(wrapper, 'input[type="checkbox"]');
-        const fileInputs = qsa(wrapper, 'input[type="file"]');
-
         if (radios.length) return radios.some(r => r.checked);
+
+        const checkboxes = qsa(wrapper, 'input[type="checkbox"]');
         if (checkboxes.length) return checkboxes.some(c => c.checked);
+
+        const fileInputs = qsa(wrapper, 'input[type="file"]');
         if (fileInputs.length) return fileInputs.every(f => f.files && f.files.length > 0);
 
-        // For selects/inputs that HubSpot didn't mark with `required` attr but shows a star:
         const selects = qsa(wrapper, 'select');
         if (selects.length) return selects.every(s => (s.value || '').trim() !== '');
 
-        const textlikes = controls.filter(c => ['INPUT', 'TEXTAREA'].includes(c.tagName));
-        if (textlikes.length) return textlikes.every(c => (c.value || '').trim() !== '');
+        const textInputs = controls.filter(c => ['INPUT', 'TEXTAREA'].includes(c.tagName));
+        if (textInputs.length) return textInputs.every(c => (c.value || '').trim() !== '');
 
         return true;
       }
 
       function isStepValid(step) {
-        // 1) Native HTML validity for everything visible
-        const controls = qsa(step, 'input, select, textarea').filter(c => isVisible(c) && c.type !== 'hidden' && !c.disabled);
-        for (const c of controls) {
-          if (c.willValidate && !c.checkValidity()) return false;
-        }
-        // 2) HubSpot "required star" groups (covers radios/files where HS sometimes omits `required`)
         const wrappers = qsa(step, '.hs-form-field');
         for (const w of wrappers) {
           if (!isHsFieldWrapperValid(w)) return false;
@@ -337,31 +326,75 @@
       }
 
       function firstInvalidInStep(step) {
-        // Prefer a natively invalid control, otherwise first wrapper failing our HS rule
-        const controls = qsa(step, 'input, select, textarea').filter(c => isVisible(c) && c.type !== 'hidden' && !c.disabled);
-        for (const c of controls) {
-          if (c.willValidate && !c.checkValidity()) return c;
-        }
         const wrappers = qsa(step, '.hs-form-field');
         for (const w of wrappers) {
           if (!isHsFieldWrapperValid(w)) {
-            // Try to return a focusable descendant
             return w.querySelector('input, select, textarea');
           }
         }
         return null;
       }
 
-      // ===== STEP BUILDING =====
+      function validateTakeOffSectionFields() {
+        const section = document.querySelector('.msf-step[data-title="Take-off Information"]');
+        if (!section || !isVisible(section)) return true;
+
+        let isValid = true;
+
+        const requiredFields = [
+          {
+            selector: 'input[name="scope"]',
+            type: 'radio'
+          },
+          {
+            selector: 'input[name="what_is_the_due_date_for_submission_"]',
+            type: 'input'
+          },
+          {
+            selector: 'input[name="take_off_price"]',
+            type: 'input'
+          },
+          {
+            selector: 'input[name="po_number"]',
+            type: 'input'
+          }
+        ];
+
+        requiredFields.forEach(field => {
+          const inputs = Array.from(section.querySelectorAll(field.selector));
+
+          if (field.type === 'radio') {
+            const checked = inputs.some(i => i.checked);
+            const wrapper = inputs[0]?.closest('.hs-form-field');
+            if (!checked) {
+              isValid = false;
+              wrapper?.classList.add('field-error');
+            } else {
+              wrapper?.classList.remove('field-error');
+            }
+          } else {
+            const input = inputs[0];
+            const wrapper = input?.closest('.hs-form-field');
+            if (!input || input.value.trim() === '') {
+              isValid = false;
+              wrapper?.classList.add('field-error');
+            } else {
+              wrapper?.classList.remove('field-error');
+            }
+          }
+        });
+
+        return isValid;
+      }
+
       function buildSteps(form) {
         const steps = [];
-        const kids = Array.from(form.children); // snapshot before we start moving nodes
+        const kids = Array.from(form.children);
         let currentStep = null;
 
         for (const node of kids) {
           const isH1Fieldset = node.matches('fieldset') && node.querySelector('.hs-richtext h1');
           if (isH1Fieldset) {
-            // start a new step
             currentStep = document.createElement('section');
             currentStep.className = 'msf-step';
             const title = node.querySelector('h1')?.textContent?.trim() || 'Step';
@@ -369,12 +402,9 @@
             form.insertBefore(currentStep, node);
             steps.push(currentStep);
           }
-          if (currentStep) {
-            currentStep.appendChild(node); // move original nodes into the step
-          }
+          if (currentStep) currentStep.appendChild(node);
         }
 
-        // Move the submit block (.hs_submit) to the last step and style it
         const submit = form.querySelector('.hs_submit.actions');
         if (submit && steps.length) {
           submit.classList.add('msf-submit', 'actions');
@@ -384,9 +414,7 @@
         return steps;
       }
 
-      // ===== NAVIGATION UI =====
       function addNavUI(form, steps) {
-        // Ensure a single full-width top progress bar exists
         let topbar = document.getElementById('msf-topbar');
         if (!topbar) {
           topbar = document.createElement('div');
@@ -399,49 +427,74 @@
         }
 
         steps.forEach((step, idx) => {
-          // Each step gets Proceed (last step hides Proceed)
           const nav = document.createElement('div');
           nav.className = 'msf-nav';
 
           const next = document.createElement('button');
           next.type = 'button';
           next.className = 'msf-btn primary';
-          next.textContent = idx === steps.length - 1 ? 'Next Section' : 'Next Section';
-          // We'll hide it on last step since the submit will be used instead
+          next.textContent = 'Next Section';
+
           if (idx === steps.length - 1) next.style.display = 'none';
 
           nav.append(next);
           step.appendChild(nav);
 
-          // Wire handlers
           next.addEventListener('click', () => {
-            if (isStepValid(step)) {
-              goTo(idx + 1);
-            } else {
-              // Trigger browser message on the first invalid control
+            const currentTitle = step.dataset.title;
+
+            if (!isStepValid(step)) {
               const bad = firstInvalidInStep(step);
               if (bad?.reportValidity) bad.reportValidity();
               bad?.focus();
+              return;
             }
+
+            if (currentTitle === 'Take-off Information' && !validateTakeOffSectionFields()) {
+              return;
+            }
+
+            if (currentTitle === 'Plans and Additional Information') {
+              const select = document.querySelector('#type_of_services_required_-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+              const selectedValue = select?.value?.trim();
+
+              if (selectedValue === 'Project Design') {
+                const designStepIndex = steps.findIndex(s => s.dataset.title === 'Project Design Information');
+                if (designStepIndex !== -1) {
+                  goTo(designStepIndex);
+                  return;
+                }
+              } else {
+                const takeoffStepIndex = steps.findIndex(s => s.dataset.title === 'Take-off Information');
+                if (takeoffStepIndex !== -1) {
+                  goTo(takeoffStepIndex);
+                  return;
+                }
+              }
+            }
+
+            goTo(idx + 1);
           });
 
-          // Enable/disable "Proceed" reactively
-          const updateNextState = () => { next.disabled = !isStepValid(step); };
-          step.__updateNextState = updateNextState;
+          const updateNextState = () => {
+            let valid = isStepValid(step);
+            if (step.dataset.title === 'Take-off Information') {
+              valid = valid && validateTakeOffSectionFields();
+            }
+            next.disabled = !valid;
+          };
 
-          // Listen to changes in this step
           qsa(step, 'input, select, textarea').forEach(ctrl => {
             ['input', 'change', 'blur'].forEach(ev => ctrl.addEventListener(ev, updateNextState));
           });
 
-          // On last step, we'll ensure native submit remains the only primary action
+          step.__updateNextState = updateNextState;
+
           if (idx === steps.length - 1) {
-            // Make sure the form's native submit isn't visible on earlier steps
             qsa(form, '.hs_submit.actions').forEach(el => el.style.display = '');
           }
         });
 
-        // Update the full-width bar fill based on active step
         function renderProgress(activeIndex) {
           const topbar = document.getElementById('msf-topbar');
           if (topbar) {
@@ -455,37 +508,28 @@
         return { renderProgress };
       }
 
-      // ===== INITIALIZATION =====
       function init(form) {
         if (form.__msfInit) return;
         form.__msfInit = true;
 
         const steps = buildSteps(form);
-        if (!steps.length) return; // nothing to do
+        if (!steps.length) return;
 
         const { renderProgress } = addNavUI(form, steps);
 
         let current = 0;
 
         function show(i) {
-          steps.forEach((s, idx) => {
-            s.classList.toggle('is-active', idx === i);
-          });
+          steps.forEach((s, idx) => s.classList.toggle('is-active', idx === i));
 
-          // Toggle submit visibility: only show on last step
           const submit = form.querySelector('.hs_submit.actions');
           if (submit) submit.style.display = i === steps.length - 1 ? '' : 'none';
 
-          // Update back/next states for the visible step
           steps[i].__updateNextState?.();
 
-          // Update global back button state
-          const globalBack = document.getElementById('globalBackBtn');
-          if (globalBack) {
-            globalBack.disabled = i === 0;
-          }
+          const backBtn = document.getElementById('globalBackBtn');
+          if (backBtn) backBtn.disabled = i === 0;
 
-          // Focus the first invalid / first focusable
           const bad = firstInvalidInStep(steps[i]);
           const candidate = bad || steps[i].querySelector('input, select, textarea, button');
           candidate?.focus({ preventScroll: true });
@@ -499,31 +543,36 @@
           show(i);
         };
 
-        // Prevent accidental full submit when pressing Enter on earlier steps
         form.addEventListener('submit', (e) => {
-          if (current < steps.length - 1) {
-            e.preventDefault();
-          }
+          if (current < steps.length - 1) e.preventDefault();
         });
 
-        // Initial paint
         show(0);
 
-        // Wire global Back button in wrapper header
-        const globalBack = document.getElementById('globalBackBtn');
-        if (globalBack) {
-          globalBack.addEventListener('click', () => {
-            if (current > 0) {
-              show(current - 1);
+        const backBtn = document.getElementById('globalBackBtn');
+        if (backBtn) {
+          backBtn.addEventListener('click', () => {
+            const currentStep = steps[current];
+            const currentTitle = currentStep.dataset.title;
+            const select = document.querySelector('#type_of_services_required_-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+            const selectedValue = select?.value?.trim();
+
+            if (
+              currentTitle === 'Project Design Information' &&
+              selectedValue === 'Project Design'
+            ) {
+              const plansStepIndex = steps.findIndex(s => s.dataset.title === 'Plans and Additional Information');
+              if (plansStepIndex !== -1) {
+                show(plansStepIndex);
+                return;
+              }
             }
+
+            if (current > 0) show(current - 1);
           });
-          console.log('Back button wired successfully');
-        } else {
-          console.log('Back button not found');
         }
       }
 
-      // ===== AUTO-INITIALIZATION =====
       const tryInit = () => {
         const f = document.querySelector(FORM_SELECTOR);
         if (f) init(f);
@@ -540,9 +589,49 @@
     })();
   </script>
 
-  <!-- Live Server Script (Development Only) -->
   <script>
-    // <![CDATA[  <-- For SVG support
+    document.addEventListener('DOMContentLoaded', function () {
+      function waitForElement() {
+        const targetElement = document.querySelector('[data-title="Project Design Information"]');
+        if (targetElement) {
+          init();
+        } else {
+          setTimeout(waitForElement, 100);
+        }
+      }
+
+      function init() {
+        const communicatorFieldYes = document.querySelector('input[name="are_you_adding_a_communicator_to_the_project_"][value="Yes"]');
+        const communicatorFieldNo = document.querySelector('input[name="are_you_adding_a_communicator_to_the_project_"][value="No"]');
+        
+        const communicatorBrandDiv = document.querySelector('.hs_what_is_the_communicator_brand_and_models_');
+        const monitoringCompanyDiv = document.querySelector('.hs_what_is_the_monitoring_company_being_used_');
+        const monitoringCertificateDiv = document.querySelector('.hs_upload_the_monitoring_company_ul_certificate');
+
+        if (!communicatorFieldYes || !communicatorFieldNo || !communicatorBrandDiv || !monitoringCompanyDiv || !monitoringCertificateDiv) {
+          console.error('Alguns elementos não foram encontrados.');
+          return;
+        }
+
+        function toggleFields() {
+          const isCommunicatorYes = communicatorFieldYes.checked;
+          
+          communicatorBrandDiv.style.display = isCommunicatorYes ? 'block' : 'none';
+          monitoringCompanyDiv.style.display = isCommunicatorYes ? 'block' : 'none';
+          monitoringCertificateDiv.style.display = isCommunicatorYes ? 'block' : 'none';
+        }
+
+        communicatorFieldYes.addEventListener('change', toggleFields);
+        communicatorFieldNo.addEventListener('change', toggleFields);
+
+        toggleFields();
+      }
+
+      waitForElement();
+    });
+  </script>
+
+  <script>
     if ('WebSocket' in window) {
       (function () {
         function refreshCSS() {
@@ -575,7 +664,6 @@
     } else {
       console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
     }
-    // ]]>
   </script>
 </body>
 </html>
