@@ -649,6 +649,410 @@
   </script>
 
   <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Função para verificar se o elemento com data-title="Project Information" existe
+    function waitForElement() {
+      const targetElement = document.querySelector('[data-title="Project Information"]');
+
+      // Se o elemento existe, chama a função de inicialização
+      if (targetElement) {
+        init();
+      } else {
+        // Caso o elemento não exista ainda, observe o DOM
+        setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
+      }
+    }
+
+    // Função principal de inicialização
+    function init() {
+      // Criando o novo fieldset com grupos de checkbox e radio buttons
+      const newFieldset = document.createElement('fieldset');
+      newFieldset.className = 'form-columns-2';
+
+      // HTML para o novo group com checkbox e radio
+      const newFieldsetHTML = `
+        <div class="hs_building_occupancy_type hs-building_occupancy_type hs-fieldtype-checkbox field hs-form-field">
+          <label id="label-building_occupancy_type" for="building_occupancy_type"><span>Building Occupancy type</span></label>
+          <div class="input">
+            <ul role="checkbox" class="inputs-list multi-container">
+
+              <!-- Grupo A com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type0" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type0" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group A (Assembly)">
+                  <span>Group A (Assembly)</span>
+                </label>
+                <div class="radio-group">
+                  <ul role="radio" class="inputs-list multi-container">
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_A1">
+                        <input id="radio_option_A1" class="hs-input" type="radio" name="radio_group_A" value="Option 1">
+                        <span>A-1</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_A2">
+                        <input id="radio_option_A2" class="hs-input" type="radio" name="radio_group_A" value="Option 2">
+                        <span>A-2</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_A3">
+                        <input id="radio_option_A3" class="hs-input" type="radio" name="radio_group_A" value="Option 3">
+                        <span>A-3</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_A4">
+                        <input id="radio_option_A4" class="hs-input" type="radio" name="radio_group_A" value="Option 4">
+                        <span>A-4</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_A5">
+                        <input id="radio_option_A5" class="hs-input" type="radio" name="radio_group_A" value="Option 5">
+                        <span>A-5</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <!-- Grupo B com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type1" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type1" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group B (Business)">
+                  <span>Group B (Business)</span>
+                </label>
+              </li>
+
+              <!-- Grupo E com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type2" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type2" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group E (Educational)">
+                  <span>Group E (Educational)</span>
+                </label>
+              </li>
+
+              <!-- Grupo F com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type3" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type3" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group F (Factory and Industrial)">
+                  <span>Group F (Factory and Industrial)</span>
+                </label>
+                <div class="radio-group">
+                  <ul role="radio" class="inputs-list multi-container">
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_F1">
+                        <input id="radio_option_F1" class="hs-input" type="radio" name="radio_group_F" value="Option 1">
+                        <span>F-1</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_F2">
+                        <input id="radio_option_F2" class="hs-input" type="radio" name="radio_group_F" value="Option 2">
+                        <span>F-2</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <!-- Grupo H com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type4" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type4" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group H (High Hazard)">
+                  <span>Group H (High Hazard)</span>
+                </label>
+                <div class="radio-group">
+                  <ul role="radio" class="inputs-list multi-container">
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_H1">
+                        <input id="radio_option_H1" class="hs-input" type="radio" name="radio_group_H" value="Option 1">
+                        <span>H-1</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_H2">
+                        <input id="radio_option_H2" class="hs-input" type="radio" name="radio_group_H" value="Option 2">
+                        <span>H-2</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_H3">
+                        <input id="radio_option_H3" class="hs-input" type="radio" name="radio_group_H" value="Option 3">
+                        <span>H-3</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_H4">
+                        <input id="radio_option_H4" class="hs-input" type="radio" name="radio_group_H" value="Option 4">
+                        <span>H-4</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_H5">
+                        <input id="radio_option_H5" class="hs-input" type="radio" name="radio_group_H" value="Option 5">
+                        <span>H-5</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <!-- Grupo I com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type5" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type5" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group I (Institutional)">
+                  <span>Group I (Institutional)</span>
+                </label>
+                <div class="radio-group">
+                  <ul role="radio" class="inputs-list multi-container">
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_I1">
+                        <input id="radio_option_I1" class="hs-input" type="radio" name="radio_group_I" value="Option 1">
+                        <span>I-1</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_I2">
+                        <input id="radio_option_I2" class="hs-input" type="radio" name="radio_group_I" value="Option 2">
+                        <span>I-2</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_I3">
+                        <input id="radio_option_I3" class="hs-input" type="radio" name="radio_group_I" value="Option 3">
+                        <span>I-3</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_I4">
+                        <input id="radio_option_I4" class="hs-input" type="radio" name="radio_group_I" value="Option 4">
+                        <span>I-4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <!-- Grupo M com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type6" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type6" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group M (Mercantile)">
+                  <span>Group M (Mercantile)</span>
+                </label>
+              </li>
+
+              <!-- Grupo R com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type7" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type7" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group R (Residential)">
+                  <span>Group R (Residential)</span>
+                </label>
+                <div class="radio-group">
+                  <ul role="radio" class="inputs-list multi-container">
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_R1">
+                        <input id="radio_option_R1" class="hs-input" type="radio" name="radio_group_R" value="Option 1">
+                        <span>R-1</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_R2">
+                        <input id="radio_option_R2" class="hs-input" type="radio" name="radio_group_R" value="Option 2">
+                        <span>R-2</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_R3">
+                        <input id="radio_option_R3" class="hs-input" type="radio" name="radio_group_R" value="Option 3">
+                        <span>R-3</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_R4">
+                        <input id="radio_option_R4" class="hs-input" type="radio" name="radio_group_R" value="Option 4">
+                        <span>R-4</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <!-- Grupo S com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type8" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type8" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group S (Storage)">
+                  <span>Group S (Storage)</span>
+                </label>
+                <div class="radio-group">
+                  <ul role="radio" class="inputs-list multi-container">
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_S1">
+                        <input id="radio_option_S1" class="hs-input" type="radio" name="radio_group_S" value="Option 1">
+                        <span>S-1</span>
+                      </label>
+                    </li>
+                    <li class="hs-form-radio" role="radio">
+                      <label for="radio_option_S2">
+                        <input id="radio_option_S2" class="hs-input" type="radio" name="radio_group_S" value="Option 2">
+                        <span>S-2</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <!-- Grupo U com radios -->
+              <li class="hs-form-checkbox" role="checkbox">
+                <label for="building_occupancy_type9" class="hs-form-checkbox-display">
+                  <input id="building_occupancy_type9" class="hs-input" type="checkbox" name="building_occupancy_type" value="Group U (Utility)">
+                  <span>Group U (Utility)</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      `;
+
+        // Inserir o HTML criado no novo fieldset
+      newFieldset.innerHTML = newFieldsetHTML;
+
+      // Encontrando a section com data-title="Project Information" e adicionando o novo fieldset
+      const targetSection = document.querySelector('[data-title="Project Information"]');
+      targetSection.appendChild(newFieldset);
+
+      // Monitorando as alterações nos checkboxes e radio buttons
+      monitorInputs();
+    }
+
+    // Função para monitorar os inputs e atualizar o campo de texto
+    function monitorInputs() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const radios = document.querySelectorAll('input[type="radio"]');
+      const outputField = document.getElementById('project_name-b1918b8e-61ec-4407-94bd-8c949ebc59a4'); // Campo de texto que vai receber os dados
+
+      // Função para atualizar o campo de texto com as seleções
+      function updateOutput() {
+        let output = '';
+        
+        // Adiciona as respostas dos checkboxes
+        checkboxes.forEach(function (checkbox) {
+          if (checkbox.checked) {
+            output += checkbox.nextElementSibling.textContent.trim() + ', ';
+          }
+        });
+
+        // Adiciona as respostas dos rádios
+        radios.forEach(function (radio) {
+          if (radio.checked) {
+            output += radio.nextElementSibling.textContent.trim() + ', ';
+          }
+        });
+
+        // Remove a última vírgula e espaço
+        if (output.endsWith(', ')) {
+          output = output.slice(0, -2);
+        }
+
+        // Atualiza o campo de texto
+        outputField.value = output;
+      }
+
+      // Função para validar se uma checkbox foi selecionada e se os radios associados estão marcados
+      function validateCheckboxAndRadio() {
+        let valid = true;
+        checkboxes.forEach(function (checkbox) {
+          if (checkbox.checked) {
+            const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
+            const isAnyRadioSelected = Array.from(associatedRadios).some(radio => radio.checked);
+            
+            // Se não houver radio selecionado e checkbox marcada, validação falha
+            if (!isAnyRadioSelected) {
+              valid = false;
+              showValidationError(checkbox.closest('li'), 'Please select at least one radio option for the checked checkbox.');
+            } else {
+              hideValidationError(checkbox.closest('li')); // Esconde a mensagem de erro
+            }
+          }
+        });
+        return valid;
+      }
+
+      // Função para mostrar o erro de validação
+      function showValidationError(container, message) {
+        let errorElement = container.querySelector('.validation-error');
+        if (!errorElement) {
+          errorElement = document.createElement('span');
+          errorElement.className = 'validation-error';
+          errorElement.style.color = 'red';
+          errorElement.style.fontSize = '12px';
+          errorElement.style.display = 'block';
+          container.appendChild(errorElement);
+        }
+        errorElement.textContent = message;
+      }
+
+      // Função para ocultar o erro de validação
+      function hideValidationError(container) {
+        const errorElement = container.querySelector('.validation-error');
+        if (errorElement) {
+          errorElement.remove();
+        }
+      }
+
+      // Adiciona event listeners para mudanças nos checkboxes e rádios
+      checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+          updateOutput();
+          if (!checkbox.checked) {
+            // Desmarcar todos os rádios quando a checkbox for desmarcada
+            const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
+            associatedRadios.forEach(radio => radio.checked = false);
+          }
+          validateCheckboxAndRadio(); // Validação após alteração
+        });
+      });
+
+    radios.forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      console.log('Radio selecionado');
+      updateOutput();
+
+      // Acesse a checkbox associada ao radio, que está dentro da mesma <label> do <input> de checkbox
+      const checkboxLabel = radio.closest('li').querySelector('label');
+      const checkbox = checkboxLabel ? checkboxLabel.querySelector('input[type="checkbox"]') : null;
+
+      console.log(checkbox); // Debug para ver o que é encontrado
+
+      if (checkbox && !checkbox.checked) {
+        checkbox.checked = true; // Marca a checkbox associada ao radio
+      }
+
+      validateCheckboxAndRadio(); // Validação após alteração
+    });
+  });
+
+
+      // Valida antes de enviar o formulário (se necessário)
+      const submitButton = document.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.addEventListener('click', function (event) {
+          if (!validateCheckboxAndRadio()) {
+            event.preventDefault(); // Impede o envio do formulário se a validação falhar
+            alert('Please select at least one radio option for the checked checkbox.');
+          }
+        });
+      }
+    }
+
+    // Inicia a verificação se o elemento está presente
+    waitForElement();
+  });
+  </script>
+
+  <script>
     if ('WebSocket' in window) {
       (function () {
         function refreshCSS() {
