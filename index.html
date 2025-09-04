@@ -287,7 +287,7 @@
     <p>We strive to deliver the best service for our customers. In order to do that, we need a little bit more information about the project to best serve you. </p>
 
     <!-- HubSpot Form -->
-    <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+    <script charset="utf-8" type="text/javascript" src="http://js.hsforms.net/forms/embed/v2.js"></script>
     <script>
       hbspt.forms.create({
         portalId: "20661566",
@@ -663,11 +663,17 @@
       }
     }
 
-    // Função principal de inicialização
     function init() {
-      // Criando o novo fieldset com grupos de checkbox e radio buttons
-      const newFieldset = document.createElement('fieldset');
-      newFieldset.className = 'form-columns-2';
+      // Identificando o fieldset onde os elementos serão injetados
+      const fieldset = document.querySelector('.form-columns-1 .hs_bulding');
+      console.log(fieldset)
+      if (!fieldset) {
+        console.error("O fieldset não foi encontrado.");
+        return;
+      }
+          fieldset.style.display = 'block' ;
+          const inputFieldset = document.querySelector('#label-bulding-b1918b8e-61ec-4407-94bd-8c949ebc59a4')
+          inputFieldset.style.display = 'block' ;
 
       // HTML para o novo group com checkbox e radio
       const newFieldsetHTML = `
@@ -917,11 +923,8 @@
       `;
 
         // Inserir o HTML criado no novo fieldset
-      newFieldset.innerHTML = newFieldsetHTML;
+      fieldset.innerHTML = newFieldsetHTML;
 
-      // Encontrando a section com data-title="Project Information" e adicionando o novo fieldset
-      const targetSection = document.querySelector('[data-title="Project Information"]');
-      targetSection.appendChild(newFieldset);
 
       // Monitorando as alterações nos checkboxes e radio buttons
       monitorInputs();
@@ -962,23 +965,30 @@
 
       // Função para validar se uma checkbox foi selecionada e se os radios associados estão marcados
       function validateCheckboxAndRadio() {
-        let valid = true;
-        checkboxes.forEach(function (checkbox) {
-          if (checkbox.checked) {
-            const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
-            const isAnyRadioSelected = Array.from(associatedRadios).some(radio => radio.checked);
-            
-            // Se não houver radio selecionado e checkbox marcada, validação falha
-            if (!isAnyRadioSelected) {
-              valid = false;
-              showValidationError(checkbox.closest('li'), 'Please select at least one radio option for the checked checkbox.');
-            } else {
-              hideValidationError(checkbox.closest('li')); // Esconde a mensagem de erro
-            }
-          }
-        });
-        return valid;
+  let valid = true;
+
+  checkboxes.forEach(function (checkbox) {
+    // Verifica se a checkbox está marcada
+    if (checkbox.checked) {
+      const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
+      const isAnyRadioSelected = Array.from(associatedRadios).some(radio => radio.checked);
+
+      // Se não houver radio selecionado e a checkbox estiver marcada, a validação falha
+      if (!isAnyRadioSelected) {
+        valid = false;
+        showValidationError(checkbox.closest('li'), 'Please select at least one radio option for the checked checkbox.');
+      } else {
+        hideValidationError(checkbox.closest('li')); // Esconde a mensagem de erro se a validação for bem-sucedida
       }
+    } else {
+      // Caso a checkbox esteja desmarcada, remove a mensagem de erro, se houver
+      hideValidationError(checkbox.closest('li'));
+    }
+  });
+
+  return valid;
+}
+
 
       // Função para mostrar o erro de validação
       function showValidationError(container, message) {
@@ -1035,21 +1045,54 @@
   });
 
 
-      // Valida antes de enviar o formulário (se necessário)
-      const submitButton = document.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.addEventListener('click', function (event) {
-          if (!validateCheckboxAndRadio()) {
-            event.preventDefault(); // Impede o envio do formulário se a validação falhar
-            alert('Please select at least one radio option for the checked checkbox.');
-          }
-        });
-      }
     }
 
     // Inicia a verificação se o elemento está presente
     waitForElement();
   });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  // Função para verificar se o elemento com data-title="Take-off Information" existe
+  function waitForElement() {
+    const targetElement = document.querySelector('[data-title="Take-off Information"]');
+
+    // Se o elemento existe, chama a função de inicialização
+    if (targetElement) {
+      init();
+    } else {
+      // Caso o elemento não exista ainda, observe o DOM
+      setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
+    }
+  }
+
+  function init() {
+    // Encontrando a section com data-title="Take-off Information"
+    const targetSection = document.querySelector('[data-title="Take-off Information"]');
+
+    if (targetSection) {
+      // Criar o botão dinamicamente
+      const submitButton = document.createElement('button');
+      submitButton.type = 'submit'; // Define como botão de envio
+      submitButton.classList.add('msf-btn', 'primary'); // Adiciona classes para estilo
+      submitButton.textContent = 'Proceed with Take-off'; // Texto do botão
+
+      // Encontrando o elemento msf-nav onde o botão será adicionado
+      const nav = targetSection.querySelector('.msf-nav');
+
+      // Verifique se a section contém o nav e adicione o botão
+      if (nav) {
+        nav.innerHTML = ''; // Limpa o conteúdo atual do nav (se houver)
+        nav.appendChild(submitButton); // Adiciona o novo botão de submit
+      }
+    }
+  }
+
+  // Inicia a verificação se o elemento está presente
+  waitForElement();
+});
+
   </script>
 
   <script>
