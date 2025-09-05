@@ -502,6 +502,10 @@ textarea {
     margin-top: 8px;
 }
 
+/* Global error shown under the dropdown */
+.dropdown-error{color:#ef4444;font-size:12px;margin:8px 0 0 4px;display:none}
+.dropdown-error.is-visible{display:block}
+
 
   </style>
 
@@ -690,6 +694,67 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
         return isValid;
       }
 
+      function setOccGlobalError(show){
+  const el = document.getElementById('occGlobalErr');
+  if (!el) return;
+  el.classList.toggle('is-visible', !!show);
+}
+
+function validateBuildingOccupancySection(showErrors = false){
+  const container = document.querySelector('.hs_building_occupancy_type');
+  if (!container) return true;
+
+  let anyChecked = false;
+  let missingSub = false;
+
+  container.querySelectorAll(':scope .hs-form-checkbox').forEach(li => {
+    const cb = li.querySelector(':scope > label input[type="checkbox"]');
+    const radios = li.querySelectorAll('.radio-group input[type="radio"]');
+    const anyRadio = Array.from(radios).some(r => r.checked);
+
+    // per-row inline error (optional – you can drop this if you want only the global message)
+    const ensureRowErr = (msg) => {
+      let e = li.querySelector('.validation-error');
+      if (!e) { e = document.createElement('span'); e.className = 'validation-error'; li.appendChild(e); }
+      e.textContent = msg;
+    };
+    const clearRowErr = () => li.querySelector('.validation-error')?.remove();
+
+    if (cb?.checked) {
+      anyChecked = true;
+      if (radios.length && !anyRadio) {
+        missingSub = true;
+        if (showErrors) ensureRowErr('Please select at least one option.');
+      } else if (showErrors) {
+        clearRowErr();
+      }
+    } else if (showErrors) {
+      clearRowErr();
+    }
+  });
+
+  const ok = anyChecked && !missingSub;
+
+  if (showErrors && !ok) {
+    // open the dropdown so the user sees the radios & errors
+    const dd = container.closest('.dropdown');
+    if (dd) {
+      dd.setAttribute('aria-expanded','true');
+      dd.querySelector('.dropdown__button')?.setAttribute('aria-expanded','true');
+      const p = dd.querySelector('.dropdown__panel'); if (p) p.hidden = false;
+    }
+  }
+  // show global message only when subcategory missing
+  setOccGlobalError(showErrors && missingSub);
+
+  return ok;
+}
+
+// hide the global message as the user changes anything in this section
+document.addEventListener('change', (e) => {
+  if (e.target.closest('.hs_building_occupancy_type')) setOccGlobalError(false);
+});
+
       function buildSteps(form) {
         const steps = [];
         const kids = Array.from(form.children);
@@ -757,6 +822,10 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
               return;
             }
 
+            if (currentTitle === 'Project Information' && !validateBuildingOccupancySection(true)) {
+  return; // block navigation
+}
+
             if (currentTitle === 'Plans and Additional Information') {
               const select = document.querySelector('#type_of_services_required_-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
               const selectedValue = select?.value?.trim();
@@ -784,12 +853,28 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
             if (step.dataset.title === 'Take-off Information') {
               valid = valid && validateTakeOffSectionFields();
             }
+            if (step.dataset.title === 'Project Information') {
+  valid = valid && validateBuildingOccupancySection(false);
+}
             next.disabled = !valid;
           };
 
           qsa(step, 'input, select, textarea').forEach(ctrl => {
             ['input', 'change', 'blur'].forEach(ev => ctrl.addEventListener(ev, updateNextState));
           });
+
+          // Add event listeners for building occupancy section if it exists in this step
+          if (step.dataset.title === 'Project Information') {
+            const buildingOccupancyContainer = step.querySelector('.hs_building_occupancy_type');
+            if (buildingOccupancyContainer) {
+              const checkboxes = buildingOccupancyContainer.querySelectorAll('input[name="building_occupancy_type"]');
+              const radios = buildingOccupancyContainer.querySelectorAll('.radio-group input[type="radio"]');
+              
+              [...checkboxes, ...radios].forEach(ctrl => {
+                ['change'].forEach(ev => ctrl.addEventListener(ev, updateNextState));
+              });
+            }
+          }
 
           step.__updateNextState = updateNextState;
 
@@ -891,6 +976,15 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
       mo.observe(document.documentElement, { childList: true, subtree: true });
     })();
   </script>
+
+<script>
+  // whenever anything inside the occupancy container changes, recompute the active step validity
+  document.addEventListener('change', (e) => {
+    if (e.target.closest('.hs_building_occupancy_type')) {
+      document.querySelector('.msf-step.is-active')?.__updateNextState?.();
+    }
+  });
+  </script>  
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -1060,6 +1154,16 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
 
         fieldset.insertAdjacentHTML('beforeend', newFieldsetHTML);
 
+        // wire Next-button state to the newly inserted inputs
+const projectStep = fieldset.closest('.msf-step');
+const bump = () => projectStep?.__updateNextState?.();
+
+fieldset.querySelectorAll('input[name="building_occupancy_type"], .radio-group input[type="radio"]')
+  .forEach(el => el.addEventListener('change', bump));
+
+// run once now so Next becomes disabled until the user completes the section
+bump();
+
         // >>> ADD (Dropdown toggle init)
         const dd = fieldset.querySelector('.dropdown');
         const btn = fieldset.querySelector('.dropdown__button');
@@ -1073,6 +1177,15 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
           btn.setAttribute('aria-expanded', open ? 'true' : 'false');
           panel.hidden = !open;
         });
+
+        // global error below the dropdown
+if (!document.getElementById('occGlobalErr')) {
+  const occGlobalErr = document.createElement('div');
+  occGlobalErr.id = 'occGlobalErr';
+  occGlobalErr.className = 'dropdown-error';
+  occGlobalErr.textContent = 'Please select at least one subcategory.';
+  dd.insertAdjacentElement('afterend', occGlobalErr);
+}
 
         // Keep radios hidden unless checkbox is pre-checked
         fieldset.querySelectorAll('.hs-form-checkbox > label > input[type="checkbox"]').forEach(cb => {
