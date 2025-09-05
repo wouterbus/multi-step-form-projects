@@ -184,7 +184,6 @@
     }
 
     label {
-      padding-bottom: 8px;
       font-size: 14px;
     }
 
@@ -194,7 +193,7 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       height: 40px;
-      margin-top: 8px !important;
+      margin-top: 8px;
     }
 
     input[type="radio" i] {
@@ -204,9 +203,9 @@
 
     select {
       height: 40px;
-      margin-top: 8px;
       border-radius: 8px;
       border: 1px solid #ccc;
+      margin-top: 8px;
     }
 
     .hs-input {
@@ -228,7 +227,6 @@
 
     ul.no-list.hs-error-msgs.inputs-list {
     position: absolute;
-    left: 24px;
 }
 
     li {
@@ -288,12 +286,12 @@ input[type="checkbox" i] {
 }
 
 li.hs-form-checkbox {
-    padding: 12px 0;
+    padding: 12px 16px;
     border-bottom: 1px solid #c0c0c0;
 }
 
 /* DROPDOWN */
-.dropdown{border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;background:#fff}
+.dropdown{border:1px solid #ccc;border-radius:8px;overflow:hidden;background:#fff}
 .dropdown__button{width:100%;appearance:none;background:#fff;border:0;padding:14px 16px;text-align:left;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
 .dropdown__button:focus{outline:2px solid #84caff;outline-offset:2px}
 .dropdown__chev{transition:transform .2s ease}
@@ -303,25 +301,96 @@ li.hs-form-checkbox {
 
 /* LIST + CHOICES */
 .inputs-list{margin:0;padding:0}
-.inputs-list>li{list-style:none;padding:12px 16px}
+.inputs-list>li{list-style:none;}
 .inputs-list>li:last-child{border-bottom:0}
 .hs-form-checkbox>label{display:inline-flex;align-items:end;gap:8px;cursor:pointer;font-weight:600}
 input[type="checkbox"]{width:18px;height:18px;accent-color:#fe6337}
 .radio-group{display:none;margin:8px 0 0 26px}
-.radio-group .inputs-list>li{border:0;padding:6px 0}
-.radio-group label{display:inline-flex;align-items:center;gap:8px;font-weight:400;cursor:pointer}
+.radio-group .inputs-list>li{border:0;}
+.radio-group label{display:inline-flex;align-items:center;font-weight:400;cursor:pointer}
 input[type="radio"]{accent-color:#fe6337}
 
 /* INLINE ERROR */
 .validation-error{color:#ef4444;font-size:12px;display:block;margin-top:6px}
 
+.building-occupancy-error {
+    color: red;
+    font-size: 12px;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    position: absolute;
+}
+
 li.hs-form-checkbox:hover {
     background-color: #f5f5f5;
 }
 
-.hs-form-b1918b8e-61ec-4407-94bd-8c949ebc59a4_92565ca0-0f29-49a5-90e4-6adf1e05d1db fieldset.form-columns-1 .input {
+.input {
     margin-right: 0px!important;
 }
+
+/* Checkbox */
+input[type="checkbox"] {
+  appearance: none;
+  width: 18px!important;
+  height: 18px!important;
+  border: 2px solid #c7cdd3;
+  border-radius: 4px;
+  background: #fff;
+  display: inline-block;
+  position: relative;
+}
+input[type="checkbox"]:checked {
+  background: #13828A;            /* box fill color */
+  border-color: #13828A;
+}
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: 2px 5px 5px 2px;         /* draws the checkmark */
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Radio (custom) */
+input[type="radio"] {
+  appearance: none;
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 50%;
+  background: #fff;
+  position: relative;
+  display: inline-block !important;
+  vertical-align: bottom;
+  margin-right: 8px;
+}
+
+input[type="radio"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;                   /* inner dot size */
+  height: 10px;
+  background: #13828A;           /* dot color */
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform .12s ease;
+}
+
+input[type="radio"]:checked {
+  border-color: #13828A;         /* outer ring color when checked */    /* optional focus-style ring */
+  outline-offset: 0;             /* adjust as desired */
+}
+
+input[type="radio"]:checked::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+
 
   </style>
 </head>
@@ -508,6 +577,71 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
         return isValid;
       }
 
+      function validateBuildingOccupancySection() {
+        const section = document.querySelector('.msf-step[data-title="Project Information"]');
+        if (!section || !isVisible(section)) return true;
+
+        const buildingOccupancyContainer = section.querySelector('.hs_building_occupancy_type');
+        if (!buildingOccupancyContainer) return true;
+
+        let isValid = true;
+        let hasCheckedCheckbox = false;
+        let hasCheckedRadio = false;
+        let hasCheckboxesWithRadios = false;
+
+        // Check if at least one checkbox is selected
+        const checkboxes = buildingOccupancyContainer.querySelectorAll('input[type="checkbox"]');
+        hasCheckedCheckbox = Array.from(checkboxes).some(cb => cb.checked);
+
+        // Check if any checked checkbox has radio buttons associated with it
+        const checkedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
+        checkedCheckboxes.forEach(cb => {
+          const li = cb.closest('.hs-form-checkbox');
+          const radios = li.querySelectorAll('.radio-group input[type="radio"]');
+          if (radios.length > 0) {
+            hasCheckboxesWithRadios = true;
+            // Check if at least one radio is selected for this checkbox
+            const hasRadioSelected = Array.from(radios).some(radio => radio.checked);
+            if (hasRadioSelected) {
+              hasCheckedRadio = true;
+            }
+          }
+        });
+
+        // Validation logic:
+        // 1. Must have at least 1 checkbox selected
+        // 2. If any checked checkbox has radio buttons, at least one radio must be selected
+        if (!hasCheckedCheckbox) {
+          isValid = false;
+          // Show error message
+          let errorElement = buildingOccupancyContainer.querySelector('.building-occupancy-error');
+          if (!errorElement) {
+            errorElement = document.createElement('div');
+            errorElement.className = 'building-occupancy-error';
+            buildingOccupancyContainer.appendChild(errorElement);
+          }
+          errorElement.textContent = 'Please select at least one type.';
+        } else if (hasCheckboxesWithRadios && !hasCheckedRadio) {
+          isValid = false;
+          // Show error message
+          let errorElement = buildingOccupancyContainer.querySelector('.building-occupancy-error');
+          if (!errorElement) {
+            errorElement = document.createElement('div');
+            errorElement.className = 'building-occupancy-error';
+            buildingOccupancyContainer.appendChild(errorElement);
+          }
+          errorElement.textContent = 'Please select at least one subcategory per building type (if available).';
+        } else {
+          // Remove error message if validation passes
+          const errorElement = buildingOccupancyContainer.querySelector('.building-occupancy-error');
+          if (errorElement) {
+            errorElement.remove();
+          }
+        }
+
+        return isValid;
+      }
+
       function buildSteps(form) {
         const steps = [];
         const kids = Array.from(form.children);
@@ -575,6 +709,10 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
               return;
             }
 
+            if (currentTitle === 'Project Information' && !validateBuildingOccupancySection()) {
+              return;
+            }
+
             if (currentTitle === 'Plans and Additional Information') {
               const select = document.querySelector('#type_of_services_required_-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
               const selectedValue = select?.value?.trim();
@@ -601,6 +739,9 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
             let valid = isStepValid(step);
             if (step.dataset.title === 'Take-off Information') {
               valid = valid && validateTakeOffSectionFields();
+            }
+            if (step.dataset.title === 'Project Information') {
+              valid = valid && validateBuildingOccupancySection();
             }
             next.disabled = !valid;
           };
@@ -898,6 +1039,21 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
         const rg = li.querySelector('.radio-group');
         if (rg) rg.style.display = cb.checked ? 'block' : 'none';
       });
+
+      // Add event listeners to trigger validation when Building Occupancy elements change
+      const buildingOccupancyContainer = fieldset.querySelector('.hs_building_occupancy_type');
+      if (buildingOccupancyContainer) {
+        const allInputs = buildingOccupancyContainer.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+        allInputs.forEach(input => {
+          input.addEventListener('change', () => {
+            // Trigger the step validation update
+            const currentStep = document.querySelector('.msf-step.is-active');
+            if (currentStep && currentStep.__updateNextState) {
+              currentStep.__updateNextState();
+            }
+          });
+        });
+      }
     }
 
     waitForElement();
@@ -949,7 +1105,7 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
       // Se não houver radio selecionado e a checkbox estiver marcada, a validação falha
       if (!isAnyRadioSelected) {
         valid = false;
-        showValidationError(checkbox.closest('li'), 'Please select at least one radio option for the checked checkbox.');
+        showValidationError(checkbox.closest('li'), 'Please select at least one option.');
       } else {
         hideValidationError(checkbox.closest('li')); // Esconde a mensagem de erro se a validação for bem-sucedida
       }
@@ -1146,7 +1302,7 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
         const anyRadio = Array.from(radios).some(r => r.checked);
         if (cb && cb.checked && radios.length && !anyRadio) {
           ok = false;
-          showErr(li, 'Please select at least one radio option for the checked checkbox.');
+          showErr(li, 'Please select at least one option.');
         }
       });
       if (!ok) {
@@ -1227,7 +1383,7 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
       const hasRadios = !!li.querySelector('.radio-group input[type="radio"]');
       const anyRadio = !!li.querySelector('.radio-group input[type="radio"]:checked');
       if (e.target.checked && hasRadios && !anyRadio) {
-        showErr(li, 'Please select at least one radio option for the checked checkbox.');
+        showErr(li, 'Please select at least one option.');
       } else {
         hideErr(li);
       }
@@ -1261,7 +1417,7 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
         const anyRadio = Array.from(radios).some(r => r.checked);
         if (cb && cb.checked && radios.length && !anyRadio) {
           ok = false;
-          showErr(li, 'Please select at least one radio option for the checked checkbox.');
+          showErr(li, 'Please select at least one option.');
         }
       });
       if (!ok) {
