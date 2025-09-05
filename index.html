@@ -390,9 +390,114 @@ input[type="radio"]:checked::after {
   transform: translate(-50%, -50%) scale(1);
 }
 
+.hs-dependent-field {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.hs_do_you_have_cad_files_.hs-do_you_have_cad_files_.hs-fieldtype-select.field.hs-form-field {
+    width: 100%;
+}
+
+.hs_upload_cad_files.hs-upload_cad_files.hs-fieldtype-file.field.hs-form-field {
+    width: 100%;
+    margin-top: 16px;
+}
+
+  /* ===== Image picker for "How would you like us to show wiring pathways?" ===== */
+  .pathway-picker {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .pathway-card {
+    border: 1px solid #cfd6dd;
+    border-radius: 12px;
+    background: #fff;
+    padding: 12px;
+    cursor: pointer;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 10px;
+    transition: box-shadow .15s ease, border-color .15s ease, transform .02s ease;
+    outline: none;
+  }
+
+  .pathway-card:active { transform: translateY(1px); }
+  .pathway-card:focus-visible { outline: 2px solid #84caff; outline-offset: 2px; }
+
+  .pathway-card[data-selected="true"] {
+    border-color: #13828A;
+    box-shadow: 0 0 0 3px rgba(19,130,138,.15);
+  }
+
+  .pathway-card__img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f4f6f8;
+  }
+
+  .pathway-card__title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #27313a;
+  }
+
+  .pathway-card__hint {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  /* Hide the native select but keep it in the a11y tree & layout flow for HubSpot */
+  .hs-pathway-select.is-visually-hidden {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    pointer-events: none !important;
+  }
+
+  /* small screens */
+  @media (max-width: 560px) {
+    .pathway-picker { grid-template-columns: 1fr; }
+  }
+
+  /* inline error (optional – HubSpot may add its own) */
+  .pathway-error {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 8px;
+    display: none;
+  }
+  .pathway-error.is-visible { display: block; }
+
+  /* Hide the native dropdown for "How would you like us to show wiring pathways?" */
+#how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4{
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* collapse any leftover spacing from HubSpot's input wrapper */
+.hs-how_would_you_like_us_to_show_wiring_pathways_ .input{
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
 
 
   </style>
+
+  
 </head>
 
 <body>
@@ -1435,6 +1540,173 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
   updateSummary();
 })();
 </script>
+
+<script>
+  (function () {
+    // CONFIG: map option values to images (use your own image URLs)
+    const OPTIONS = [
+      {
+        value: 'Individual Pathway (Free Air)',
+        title: 'Individual Pathway',
+        hint: 'Free Air',
+        img: 'https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/image%20985.png',   // TODO: replace
+        alt: 'Cables run individually in free air'
+      },
+      {
+        value: 'Shared Pathway (Conduit)',
+        title: 'Shared Pathway',
+        hint: 'Conduit',
+        img: 'https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/image%20986.png',    // TODO: replace
+        alt: 'Multiple cables run together in conduit'
+      }
+    ];
+  
+    // Prefer the provided ID; fall back to name selector if HubSpot ever regenerates the id.
+    const SELECTOR = '#how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4, select[name="how_would_you_like_us_to_show_wiring_pathways_"]';
+  
+    function enhancePathwaySelect(select) {
+      if (!select || select.__enhanced) return;
+      select.__enhanced = true;
+  
+      // Mark so we can style/hide it
+      select.classList.add('hs-pathway-select', 'is-visually-hidden');
+  
+      // Container right after the select's label/div
+      const wrapper = select.closest('.hs-form-field') || select.parentElement;
+      const inputDiv = wrapper.querySelector('.input') || wrapper;
+  
+      // Create picker container
+      const picker = document.createElement('div');
+      picker.className = 'pathway-picker';
+      picker.setAttribute('role', 'listbox');
+      picker.setAttribute('aria-label', 'How would you like us to show wiring pathways?');
+      picker.tabIndex = 0; // focus container for arrow key nav
+  
+      // Optional inline error holder
+      const err = document.createElement('div');
+      err.className = 'pathway-error';
+      err.textContent = 'Please choose one option.';
+  
+      // Build cards
+      OPTIONS.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pathway-card';
+        btn.setAttribute('role', 'option');
+        btn.setAttribute('data-value', opt.value);
+        btn.setAttribute('aria-selected', 'false');
+        btn.setAttribute('data-selected', 'false');
+  
+        // Card content
+        btn.innerHTML = `
+          <img class="pathway-card__img" src="${opt.img}" alt="${opt.alt}">
+          <div class="pathway-card__title">${opt.title}</div>
+          <div class="pathway-card__hint">${opt.hint}</div>
+        `;
+  
+        // Mouse/touch
+        btn.addEventListener('click', () => selectValue(opt.value, true));
+  
+        // Keyboard on the button itself
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectValue(opt.value, true); }
+        });
+  
+        picker.appendChild(btn);
+      });
+  
+      // Insert UI just after the native field
+      inputDiv.appendChild(picker);
+      inputDiv.appendChild(err);
+  
+      // Selection helpers
+      function reflectUI(value) {
+        picker.querySelectorAll('.pathway-card').forEach(el => {
+          const isSel = el.getAttribute('data-value') === value && value !== '';
+          el.setAttribute('aria-selected', isSel ? 'true' : 'false');
+          el.setAttribute('data-selected', isSel ? 'true' : 'false');
+        });
+      }
+  
+      function selectValue(value, userAction = false) {
+        // Update native select (so HubSpot gets the right value)
+        select.value = value;
+        reflectUI(value);
+  
+        // Clear error if any
+        err.classList.remove('is-visible');
+  
+        // Dispatch change so any HubSpot dependent logic runs
+        const ev = new Event('change', { bubbles: true });
+        select.dispatchEvent(ev);
+  
+        // If user clicked/pressed, move focus onward for better flow
+        if (userAction) {
+          // try to move focus to next focusable control in this step
+          const all = Array.from(document.querySelectorAll('input, select, textarea, button, [tabindex]:not([tabindex="-1"])'));
+          const idx = all.indexOf(picker);
+          if (idx > -1 && all[idx + 1]) all[idx + 1].focus();
+        }
+      }
+  
+      // Initialize from any preselected value (e.g., back/forward nav)
+      reflectUI(select.value);
+  
+      // If HubSpot sets required, mirror a bit of inline error on submit
+      const form = select.closest('form');
+      if (form) {
+        form.addEventListener('submit', () => {
+          const required = wrapper.querySelector('.hs-form-required');
+          if (required && !select.value) {
+            err.classList.add('is-visible');
+            // ensure any collapsible parents are open (you already do this for other sections)
+          } else {
+            err.classList.remove('is-visible');
+          }
+        });
+      }
+  
+      // Arrow-key nav when container has focus
+      picker.addEventListener('keydown', (e) => {
+        const cards = Array.from(picker.querySelectorAll('.pathway-card'));
+        const curIdx = cards.findIndex(c => c.getAttribute('data-selected') === 'true');
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = cards[(Math.max(curIdx, -1) + 1) % cards.length];
+          next.focus();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = cards[(curIdx > 0 ? curIdx : cards.length) - 1];
+          prev.focus();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          // select the focused card
+          const active = document.activeElement?.closest('.pathway-card');
+          if (active) {
+            e.preventDefault();
+            selectValue(active.getAttribute('data-value'), true);
+          }
+        } else if (e.key === 'Escape') {
+          picker.blur();
+        }
+      });
+    }
+  
+    // Wait for HubSpot to inject the field, then enhance it
+    const tryEnhance = () => {
+      const select = document.querySelector(SELECTOR);
+      if (select) enhancePathwaySelect(select);
+    };
+  
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', tryEnhance);
+    } else {
+      tryEnhance();
+    }
+  
+    const mo = new MutationObserver(tryEnhance);
+    mo.observe(document.documentElement, { childList: true, subtree: true });
+  })();
+  </script>  
 
 
 </body>
