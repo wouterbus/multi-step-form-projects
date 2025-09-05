@@ -577,71 +577,6 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
         return isValid;
       }
 
-      function validateBuildingOccupancySection() {
-        const section = document.querySelector('.msf-step[data-title="Project Information"]');
-        if (!section || !isVisible(section)) return true;
-
-        const buildingOccupancyContainer = section.querySelector('.hs_building_occupancy_type');
-        if (!buildingOccupancyContainer) return true;
-
-        let isValid = true;
-        let hasCheckedCheckbox = false;
-        let hasCheckedRadio = false;
-        let hasCheckboxesWithRadios = false;
-
-        // Check if at least one checkbox is selected
-        const checkboxes = buildingOccupancyContainer.querySelectorAll('input[type="checkbox"]');
-        hasCheckedCheckbox = Array.from(checkboxes).some(cb => cb.checked);
-
-        // Check if any checked checkbox has radio buttons associated with it
-        const checkedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked);
-        checkedCheckboxes.forEach(cb => {
-          const li = cb.closest('.hs-form-checkbox');
-          const radios = li.querySelectorAll('.radio-group input[type="radio"]');
-          if (radios.length > 0) {
-            hasCheckboxesWithRadios = true;
-            // Check if at least one radio is selected for this checkbox
-            const hasRadioSelected = Array.from(radios).some(radio => radio.checked);
-            if (hasRadioSelected) {
-              hasCheckedRadio = true;
-            }
-          }
-        });
-
-        // Validation logic:
-        // 1. Must have at least 1 checkbox selected
-        // 2. If any checked checkbox has radio buttons, at least one radio must be selected
-        if (!hasCheckedCheckbox) {
-          isValid = false;
-          // Show error message
-          let errorElement = buildingOccupancyContainer.querySelector('.building-occupancy-error');
-          if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.className = 'building-occupancy-error';
-            buildingOccupancyContainer.appendChild(errorElement);
-          }
-          errorElement.textContent = 'Please select at least one type.';
-        } else if (hasCheckboxesWithRadios && !hasCheckedRadio) {
-          isValid = false;
-          // Show error message
-          let errorElement = buildingOccupancyContainer.querySelector('.building-occupancy-error');
-          if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.className = 'building-occupancy-error';
-            buildingOccupancyContainer.appendChild(errorElement);
-          }
-          errorElement.textContent = 'Please select at least one subcategory per building type (if available).';
-        } else {
-          // Remove error message if validation passes
-          const errorElement = buildingOccupancyContainer.querySelector('.building-occupancy-error');
-          if (errorElement) {
-            errorElement.remove();
-          }
-        }
-
-        return isValid;
-      }
-
       function buildSteps(form) {
         const steps = [];
         const kids = Array.from(form.children);
@@ -709,10 +644,6 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
               return;
             }
 
-            if (currentTitle === 'Project Information' && !validateBuildingOccupancySection()) {
-              return;
-            }
-
             if (currentTitle === 'Plans and Additional Information') {
               const select = document.querySelector('#type_of_services_required_-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
               const selectedValue = select?.value?.trim();
@@ -739,9 +670,6 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
             let valid = isStepValid(step);
             if (step.dataset.title === 'Take-off Information') {
               valid = valid && validateTakeOffSectionFields();
-            }
-            if (step.dataset.title === 'Project Information') {
-              valid = valid && validateBuildingOccupancySection();
             }
             next.disabled = !valid;
           };
@@ -865,7 +793,7 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
       function init() {
         const communicatorFieldYes = document.querySelector('input[name="are_you_adding_a_communicator_to_the_project_"][value="Yes"]');
         const communicatorFieldNo = document.querySelector('input[name="are_you_adding_a_communicator_to_the_project_"][value="No"]');
-        
+
         const communicatorBrandDiv = document.querySelector('.hs_what_is_the_communicator_brand_and_models_');
         const monitoringCompanyDiv = document.querySelector('.hs_what_is_the_monitoring_company_being_used_');
         const monitoringCertificateDiv = document.querySelector('.hs_upload_the_monitoring_company_ul_certificate');
@@ -877,7 +805,7 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
 
         function toggleFields() {
           const isCommunicatorYes = communicatorFieldYes.checked;
-          
+
           communicatorBrandDiv.style.display = isCommunicatorYes ? 'block' : 'none';
           monitoringCompanyDiv.style.display = isCommunicatorYes ? 'block' : 'none';
           monitoringCertificateDiv.style.display = isCommunicatorYes ? 'block' : 'none';
@@ -894,332 +822,408 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
   </script>
 
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Função para verificar se o elemento com data-title="Project Information" existe
-    function waitForElement() {
-      const targetElement = document.querySelector('[data-title="Project Information"]');
+    document.addEventListener('DOMContentLoaded', function () {
+      // Função para verificar se o elemento com data-title="Project Information" existe
+      function waitForElement() {
+        const targetElement = document.querySelector('[data-title="Project Information"]');
 
-      // Se o elemento existe, chama a função de inicialização
-      if (targetElement) {
-        init();
-      } else {
-        // Caso o elemento não exista ainda, observe o DOM
-        setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
+        // Se o elemento existe, chama a função de inicialização
+        if (targetElement) {
+          init();
+        } else {
+          // Caso o elemento não exista ainda, observe o DOM
+          setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
+        }
       }
-    }
 
-    function init() {
-      // Identificando o fieldset onde os elementos serão injetados
-      const fieldset = document.querySelector('.form-columns-1 .hs_bulding');
-      console.log(fieldset)
-      if (!fieldset) {
-        console.error("O fieldset não foi encontrado.");
-        return;
-      }
-          fieldset.style.display = 'block' ;
-          const inputFieldset = document.querySelector('#label-bulding-b1918b8e-61ec-4407-94bd-8c949ebc59a4')
-          inputFieldset.style.display = 'block' ;
+      function init() {
+        // Identificando o fieldset onde os elementos serão injetados
+        const fieldset = document.querySelector('.form-columns-1 .hs_bulding');
+        console.log(fieldset)
+        if (!fieldset) {
+          console.error("O fieldset não foi encontrado.");
+          return;
+        }
+        fieldset.style.display = 'block';
+        const inputFieldset = document.querySelector('#label-bulding-b1918b8e-61ec-4407-94bd-8c949ebc59a4')
+        inputFieldset.style.display = 'block';
 
-      const newFieldsetHTML = `
-        <section class="dropdown" aria-expanded="false">
-          <button type="button" class="dropdown__button" aria-controls="occPanel" aria-expanded="false">
-            <span>Building Occupancy type</span>
-            <svg class="dropdown__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+        const newFieldsetHTML = `
+          <section class="dropdown" aria-expanded="false">
+            <button type="button" class="dropdown__button" aria-controls="occPanel" aria-expanded="false">
+              <span>Building Occupancy type</span>
+              <svg class="dropdown__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
 
-          <div id="occPanel" class="dropdown__panel">
-            <div class="hs_building_occupancy_type hs-fieldtype-checkbox field">
-              <div class="input">
-                <ul role="group" aria-label="Building Occupancy type" class="inputs-list multi-container">
-                  <li class="hs-form-checkbox">
-                    <label><input type="checkbox" name="building_occupancy_type" value="Group A (Assembly)"><span>Group A (Assembly)</span></label>
-                    <div class="radio-group">
-                      <ul class="inputs-list multi-container">
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-1"><span>A-1</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-2"><span>A-2</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-3"><span>A-3</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-4"><span>A-4</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-5"><span>A-5</span></label></li>
-                      </ul>
-                    </div>
-                  </li>
+            <div id="occPanel" class="dropdown__panel">
+              <div class="hs_building_occupancy_type hs-fieldtype-checkbox field">
+                <div class="input">
+                  <ul role="group" aria-label="Building Occupancy type" class="inputs-list multi-container">
+                    <li class="hs-form-checkbox">
+                      <label><input type="checkbox" name="building_occupancy_type" value="Group A (Assembly)"><span>Group A (Assembly)</span></label>
+                      <div class="radio-group">
+                        <ul class="inputs-list multi-container">
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-1"><span>A-1</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-2"><span>A-2</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-3"><span>A-3</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-4"><span>A-4</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_A" value="A-5"><span>A-5</span></label></li>
+                        </ul>
+                      </div>
+                    </li>
 
-                  <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group B (Business)"><span>Group B (Business)</span></label></li>
-                  <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group E (Educational)"><span>Group E (Educational)</span></label></li>
+                    <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group B (Business)"><span>Group B (Business)</span></label></li>
+                    <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group E (Educational)"><span>Group E (Educational)</span></label></li>
 
-                  <li class="hs-form-checkbox">
-                    <label><input type="checkbox" name="building_occupancy_type" value="Group F (Factory and Industrial)"><span>Group F (Factory and Industrial)</span></label>
-                    <div class="radio-group">
-                      <ul class="inputs-list multi-container">
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_F" value="F-1"><span>F-1</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_F" value="F-2"><span>F-2</span></label></li>
-                      </ul>
-                    </div>
-                  </li>
+                    <li class="hs-form-checkbox">
+                      <label><input type="checkbox" name="building_occupancy_type" value="Group F (Factory and Industrial)"><span>Group F (Factory and Industrial)</span></label>
+                      <div class="radio-group">
+                        <ul class="inputs-list multi-container">
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_F" value="F-1"><span>F-1</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_F" value="F-2"><span>F-2</span></label></li>
+                        </ul>
+                      </div>
+                    </li>
 
-                  <li class="hs-form-checkbox">
-                    <label><input type="checkbox" name="building_occupancy_type" value="Group H (High Hazard)"><span>Group H (High Hazard)</span></label>
-                    <div class="radio-group">
-                      <ul class="inputs-list multi-container">
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-1"><span>H-1</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-2"><span>H-2</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-3"><span>H-3</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-4"><span>H-4</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-5"><span>H-5</span></label></li>
-                      </ul>
-                    </div>
-                  </li>
+                    <li class="hs-form-checkbox">
+                      <label><input type="checkbox" name="building_occupancy_type" value="Group H (High Hazard)"><span>Group H (High Hazard)</span></label>
+                      <div class="radio-group">
+                        <ul class="inputs-list multi-container">
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-1"><span>H-1</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-2"><span>H-2</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-3"><span>H-3</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-4"><span>H-4</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_H" value="H-5"><span>H-5</span></label></li>
+                        </ul>
+                      </div>
+                    </li>
 
-                  <li class="hs-form-checkbox">
-                    <label><input type="checkbox" name="building_occupancy_type" value="Group I (Institutional)"><span>Group I (Institutional)</span></label>
-                    <div class="radio-group">
-                      <ul class="inputs-list multi-container">
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-1"><span>I-1</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-2"><span>I-2</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-3"><span>I-3</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-4"><span>I-4</span></label></li>
-                      </ul>
-                    </div>
-                  </li>
+                    <li class="hs-form-checkbox">
+                      <label><input type="checkbox" name="building_occupancy_type" value="Group I (Institutional)"><span>Group I (Institutional)</span></label>
+                      <div class="radio-group">
+                        <ul class="inputs-list multi-container">
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-1"><span>I-1</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-2"><span>I-2</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-3"><span>I-3</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_I" value="I-4"><span>I-4</span></label></li>
+                        </ul>
+                      </div>
+                    </li>
 
-                  <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group M (Mercantile)"><span>Group M (Mercantile)</span></label></li>
+                    <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group M (Mercantile)"><span>Group M (Mercantile)</span></label></li>
 
-                  <li class="hs-form-checkbox">
-                    <label><input type="checkbox" name="building_occupancy_type" value="Group R (Residential)"><span>Group R (Residential)</span></label>
-                    <div class="radio-group">
-                      <ul class="inputs-list multi-container">
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-1"><span>R-1</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-2"><span>R-2</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-3"><span>R-3</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-4"><span>R-4</span></label></li>
-                      </ul>
-                    </div>
-                  </li>
+                    <li class="hs-form-checkbox">
+                      <label><input type="checkbox" name="building_occupancy_type" value="Group R (Residential)"><span>Group R (Residential)</span></label>
+                      <div class="radio-group">
+                        <ul class="inputs-list multi-container">
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-1"><span>R-1</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-2"><span>R-2</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-3"><span>R-3</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_R" value="R-4"><span>R-4</span></label></li>
+                        </ul>
+                      </div>
+                    </li>
 
-                  <li class="hs-form-checkbox">
-                    <label><input type="checkbox" name="building_occupancy_type" value="Group S (Storage)"><span>Group S (Storage)</span></label>
-                    <div class="radio-group">
-                      <ul class="inputs-list multi-container">
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_S" value="S-1"><span>S-1</span></label></li>
-                        <li class="hs-form-radio"><label><input type="radio" name="radio_group_S" value="S-2"><span>S-2</span></label></li>
-                      </ul>
-                    </div>
-                  </li>
+                    <li class="hs-form-checkbox">
+                      <label><input type="checkbox" name="building_occupancy_type" value="Group S (Storage)"><span>Group S (Storage)</span></label>
+                      <div class="radio-group">
+                        <ul class="inputs-list multi-container">
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_S" value="S-1"><span>S-1</span></label></li>
+                          <li class="hs-form-radio"><label><input type="radio" name="radio_group_S" value="S-2"><span>S-2</span></label></li>
+                        </ul>
+                      </div>
+                    </li>
 
-                  <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group U (Utility)"><span>Group U (Utility)</span></label></li>
-                </ul>
+                    <li class="hs-form-checkbox"><label><input type="checkbox" name="building_occupancy_type" value="Group U (Utility)"><span>Group U (Utility)</span></label></li>
+                  </ul>
+                </div>
               </div>
+              <input type="hidden" id="building_occupancy_summary" name="building_occupancy_summary" />
             </div>
-            <input type="hidden" id="building_occupancy_summary" name="building_occupancy_summary" />
-          </div>
-        </section>
-      `;
+          </section>
+        `;
 
-      fieldset.innerHTML = newFieldsetHTML;
+        fieldset.insertAdjacentHTML('beforeend', newFieldsetHTML);
 
-      // >>> ADD (Dropdown toggle init)
-      const dd = fieldset.querySelector('.dropdown');
-      const btn = fieldset.querySelector('.dropdown__button');
-      const panel = fieldset.querySelector('.dropdown__panel');
-      dd.setAttribute('aria-expanded','false');
-      btn.setAttribute('aria-expanded','false');
-      panel.hidden = true;
-      btn.addEventListener('click', () => {
-        const open = dd.getAttribute('aria-expanded') !== 'true';
-        dd.setAttribute('aria-expanded', open ? 'true' : 'false');
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        panel.hidden = !open;
-      });
+        // >>> ADD (Dropdown toggle init)
+        const dd = fieldset.querySelector('.dropdown');
+        const btn = fieldset.querySelector('.dropdown__button');
+        const panel = fieldset.querySelector('.dropdown__panel');
+        dd.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-expanded', 'false');
+        panel.hidden = true;
+        btn.addEventListener('click', () => {
+          const open = dd.getAttribute('aria-expanded') !== 'true';
+          dd.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          panel.hidden = !open;
+        });
 
-      // Keep radios hidden unless checkbox is pre-checked
-      fieldset.querySelectorAll('.hs-form-checkbox > label > input[type="checkbox"]').forEach(cb => {
-        const li = cb.closest('.hs-form-checkbox');
-        const rg = li.querySelector('.radio-group');
-        if (rg) rg.style.display = cb.checked ? 'block' : 'none';
-      });
-
-      // Add event listeners to trigger validation when Building Occupancy elements change
-      const buildingOccupancyContainer = fieldset.querySelector('.hs_building_occupancy_type');
-      if (buildingOccupancyContainer) {
-        const allInputs = buildingOccupancyContainer.querySelectorAll('input[type="checkbox"], input[type="radio"]');
-        allInputs.forEach(input => {
-          input.addEventListener('change', () => {
-            // Trigger the step validation update
-            const currentStep = document.querySelector('.msf-step.is-active');
-            if (currentStep && currentStep.__updateNextState) {
-              currentStep.__updateNextState();
-            }
-          });
+        // Keep radios hidden unless checkbox is pre-checked
+        fieldset.querySelectorAll('.hs-form-checkbox > label > input[type="checkbox"]').forEach(cb => {
+          const li = cb.closest('.hs-form-checkbox');
+          const rg = li.querySelector('.radio-group');
+          if (rg) rg.style.display = cb.checked ? 'block' : 'none';
         });
       }
-    }
 
-    waitForElement();
-  });
-    
+      waitForElement();
+    });
+
 
     // Função para monitorar os inputs e atualizar o campo de texto
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      const radios = document.querySelectorAll('input[type="radio"]');
-      const outputField = document.getElementById('project_name-b1918b8e-61ec-4407-94bd-8c949ebc59a4'); // Campo de texto que vai receber os dados
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const radios = document.querySelectorAll('input[type="radio"]');
+    const outputField = document.getElementById('bulding-b1918b8e-61ec-4407-94bd-8c949ebc59a4'); // Campo de texto que vai receber os dados
 
-      // Função para atualizar o campo de texto com as seleções
-      function updateOutput() {
-        let output = '';
-        
-        // Adiciona as respostas dos checkboxes
-        checkboxes.forEach(function (checkbox) {
-          if (checkbox.checked) {
-            output += checkbox.nextElementSibling.textContent.trim() + ', ';
-          }
-        });
+    // Função para atualizar o campo de texto com as seleções
+    function updateOutput() {
+      let output = '';
 
-        // Adiciona as respostas dos rádios
-        radios.forEach(function (radio) {
-          if (radio.checked) {
-            output += radio.nextElementSibling.textContent.trim() + ', ';
-          }
-        });
-
-        // Remove a última vírgula e espaço
-        if (output.endsWith(', ')) {
-          output = output.slice(0, -2);
-        }
-
-        // Atualiza o campo de texto
-        outputField.value = output;
-      }
-
-      // Função para validar se uma checkbox foi selecionada e se os radios associados estão marcados
-      function validateCheckboxAndRadio() {
-  let valid = true;
-
-  checkboxes.forEach(function (checkbox) {
-    // Verifica se a checkbox está marcada
-    if (checkbox.checked) {
-      const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
-      const isAnyRadioSelected = Array.from(associatedRadios).some(radio => radio.checked);
-
-      // Se não houver radio selecionado e a checkbox estiver marcada, a validação falha
-      if (!isAnyRadioSelected) {
-        valid = false;
-        showValidationError(checkbox.closest('li'), 'Please select at least one option.');
-      } else {
-        hideValidationError(checkbox.closest('li')); // Esconde a mensagem de erro se a validação for bem-sucedida
-      }
-    } else {
-      // Caso a checkbox esteja desmarcada, remove a mensagem de erro, se houver
-      hideValidationError(checkbox.closest('li'));
-    }
-  });
-
-  return valid;
-}
-
-
-      // Função para mostrar o erro de validação
-      function showValidationError(container, message) {
-        let errorElement = container.querySelector('.validation-error');
-        if (!errorElement) {
-          errorElement = document.createElement('span');
-          errorElement.className = 'validation-error';
-          errorElement.style.color = 'red';
-          errorElement.style.fontSize = '12px';
-          errorElement.style.display = 'block';
-          container.appendChild(errorElement);
-        }
-        errorElement.textContent = message;
-      }
-
-      // Função para ocultar o erro de validação
-      function hideValidationError(container) {
-        const errorElement = container.querySelector('.validation-error');
-        if (errorElement) {
-          errorElement.remove();
-        }
-      }
-
-      // Adiciona event listeners para mudanças nos checkboxes e rádios
+      // Adiciona as respostas dos checkboxes
       checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-          updateOutput();
-          if (!checkbox.checked) {
-            // Desmarcar todos os rádios quando a checkbox for desmarcada
-            const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
-            associatedRadios.forEach(radio => radio.checked = false);
-          }
-          validateCheckboxAndRadio(); // Validação após alteração
-        });
+        if (checkbox.checked) {
+          output += checkbox.nextElementSibling.textContent.trim() + ', ';
+        }
       });
 
-    radios.forEach(function (radio) {
-    radio.addEventListener('change', function () {
-      console.log('Radio selecionado');
-      updateOutput();
+      // Adiciona as respostas dos rádios
+      radios.forEach(function (radio) {
+        if (radio.checked) {
+          output += radio.nextElementSibling.textContent.trim() + ', ';
+        }
+      });
 
-      // Acesse a checkbox associada ao radio, que está dentro da mesma <label> do <input> de checkbox
-      const checkboxLabel = radio.closest('li').querySelector('label');
-      const checkbox = checkboxLabel ? checkboxLabel.querySelector('input[type="checkbox"]') : null;
-
-      console.log(checkbox); // Debug para ver o que é encontrado
-
-      if (checkbox && !checkbox.checked) {
-        checkbox.checked = true; // Marca a checkbox associada ao radio
+      // Remove a última vírgula e espaço
+      if (output.endsWith(', ')) {
+        output = output.slice(0, -2);
       }
 
-      validateCheckboxAndRadio(); // Validação após alteração
+      // Atualiza o campo de texto
+      outputField.value = output;
+    }
+
+    // Função para validar se uma checkbox foi selecionada e se os radios associados estão marcados
+    function validateCheckboxAndRadio() {
+      let valid = true;
+
+      checkboxes.forEach(function (checkbox) {
+        // Verifica se a checkbox está marcada
+        if (checkbox.checked) {
+          const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
+          const isAnyRadioSelected = Array.from(associatedRadios).some(radio => radio.checked);
+
+          // Se não houver radio selecionado e a checkbox estiver marcada, a validação falha
+          if (!isAnyRadioSelected) {
+            valid = false;
+            showValidationError(checkbox.closest('li'), 'Please select at least one option.');
+          } else {
+            hideValidationError(checkbox.closest('li')); // Esconde a mensagem de erro se a validação for bem-sucedida
+          }
+        } else {
+          // Caso a checkbox esteja desmarcada, remove a mensagem de erro, se houver
+          hideValidationError(checkbox.closest('li'));
+        }
+      });
+
+      return valid;
+    }
+
+
+    // Função para mostrar o erro de validação
+    function showValidationError(container, message) {
+      let errorElement = container.querySelector('.validation-error');
+      if (!errorElement) {
+        errorElement = document.createElement('span');
+        errorElement.className = 'validation-error';
+        errorElement.style.color = 'red';
+        errorElement.style.fontSize = '12px';
+        errorElement.style.display = 'block';
+        container.appendChild(errorElement);
+      }
+      errorElement.textContent = message;
+    }
+
+    // Função para ocultar o erro de validação
+    function hideValidationError(container) {
+      const errorElement = container.querySelector('.validation-error');
+      if (errorElement) {
+        errorElement.remove();
+      }
+    }
+
+    // Adiciona event listeners para mudanças nos checkboxes e rádios
+    checkboxes.forEach(function (checkbox) {
+      checkbox.addEventListener('change', function () {
+        updateOutput();
+        if (!checkbox.checked) {
+          // Desmarcar todos os rádios quando a checkbox for desmarcada
+          const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
+          associatedRadios.forEach(radio => radio.checked = false);
+        }
+        validateCheckboxAndRadio(); // Validação após alteração
+      });
     });
-  });
+
+    radios.forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        console.log('Radio selecionado');
+        updateOutput();
+
+        // Acesse a checkbox associada ao radio, que está dentro da mesma <label> do <input> de checkbox
+        const checkboxLabel = radio.closest('li').querySelector('label');
+        const checkbox = checkboxLabel ? checkboxLabel.querySelector('input[type="checkbox"]') : null;
+
+        console.log(checkbox); // Debug para ver o que é encontrado
+
+        if (checkbox && !checkbox.checked) {
+          checkbox.checked = true; // Marca a checkbox associada ao radio
+        }
+
+        validateCheckboxAndRadio(); // Validação após alteração
+      });
+    });
 
     // Inicia a verificação se o elemento está presente
     waitForElement();
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-  // Função para verificar se o elemento com data-title="Take-off Information" existe
-  function waitForElement() {
-    const targetElement = document.querySelector('[data-title="Take-off Information"]');
+    function waitForPhoneInput() {
+      const phoneInput = document.getElementById("mobilephone-b1918b8e-61ec-4407-94bd-8c949ebc59a4");
 
-    // Se o elemento existe, chama a função de inicialização
-    if (targetElement) {
-      init();
-    } else {
-      // Caso o elemento não exista ainda, observe o DOM
-      setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
-    }
-  }
+      if (phoneInput) {
+        phoneInput.addEventListener("input", function (e) {
+          let value = e.target.value;
 
-  function init() {
-    // Encontrando a section com data-title="Take-off Information"
-    const targetSection = document.querySelector('[data-title="Take-off Information"]');
+          // Permite números e o caractere + em qualquer posição
+          value = value.replace(/[^\d+]/g, "");
 
-    if (targetSection) {
-      // Criar o botão dinamicamente
-      const submitButton = document.createElement('button');
-      submitButton.type = 'submit'; // Define como botão de envio
-      submitButton.classList.add('msf-btn', 'primary'); // Adiciona classes para estilo
-      submitButton.textContent = 'Proceed with Take-off'; // Texto do botão
+          // Limita os números a 10 dígitos, mas mantém o + se houver
+          const plusCount = (value.match(/\+/g) || []).length;
+          let numbersOnly = value.replace(/\D/g, "");
+          if (numbersOnly.length > 10) numbersOnly = numbersOnly.slice(0, 10);
 
-      // Encontrando o elemento msf-nav onde o botão será adicionado
-      const nav = targetSection.querySelector('.msf-nav');
+          // Reconstrói o valor mantendo os + originais
+          let nonDigits = value.replace(/\d/g, "");
+          value = numbersOnly + nonDigits.replace(/\+/g, "+");
 
-      // Verifique se a section contém o nav e adicione o botão
-      if (nav) {
-        nav.innerHTML = ''; // Limpa o conteúdo atual do nav (se houver)
-        nav.appendChild(submitButton); // Adiciona o novo botão de submit
+          // Formata apenas os números
+          let formattedNumbers = numbersOnly;
+          if (numbersOnly.length > 6) {
+            formattedNumbers = `(${numbersOnly.slice(0, 3)}) ${numbersOnly.slice(3, 6)}-${numbersOnly.slice(6)}`;
+          } else if (numbersOnly.length > 3) {
+            formattedNumbers = `(${numbersOnly.slice(0, 3)}) ${numbersOnly.slice(3)}`;
+          } else if (numbersOnly.length > 0) {
+            formattedNumbers = `(${numbersOnly}`;
+          }
+
+          // Adiciona os + de volta nas posições que o usuário digitou
+          e.target.value = formattedNumbers + nonDigits.replace(/\d/g, "");
+        });
+
+        clearInterval(waitInterval); // Para de verificar quando encontrou
       }
-    }
-  }
 
-  // Inicia a verificação se o elemento está presente
-  waitForElement();
-});
+    }
+
+    // Verifica a cada 200ms até o elemento existir
+    const waitInterval = setInterval(waitForPhoneInput, 200);
 
   </script>
 
+  <script>
+    const waitInterval1 = setInterval(() => {
+      const takeOffPriceInput = document.querySelector('input[name="take_off_price"]');
+      if (takeOffPriceInput) {
+        takeOffPriceInput.disabled = true; // desabilita
+        clearInterval(waitInterval1); // para de checar
+      }
+      const designPriceInput = document.querySelector('input[name="design_price"]');
+      if (designPriceInput) {
+        designPriceInput.disabled = true; // desabilita
+        clearInterval(waitInterval1); // para de checar
+      }
+    }, 100); // checa a cada 100ms
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Função para verificar se o elemento com data-title="Take-off Information" existe
+      function waitForElement() {
+        const targetElement = document.querySelector('[data-title="Take-off Information"]');
+
+        // Se o elemento existe, chama a função de inicialização
+        if (targetElement) {
+          init();
+        } else {
+          // Caso o elemento não exista ainda, observe o DOM
+          setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
+        }
+      }
+
+      function init() {
+        // Encontrando a section com data-title="Take-off Information"
+        const targetSection = document.querySelector('[data-title="Take-off Information"]');
+
+        if (targetSection) {
+          // Criar o botão dinamicamente
+          const submitButton = document.createElement('button');
+          submitButton.type = 'submit'; // Define como botão de envio
+          submitButton.classList.add('msf-btn', 'primary'); // Adiciona classes para estilo
+          submitButton.textContent = 'Proceed with Take-off'; // Texto do botão
+
+          // Encontrando o elemento msf-nav onde o botão será adicionado
+          const nav = targetSection.querySelector('.msf-nav');
+
+          // Verifique se a section contém o nav e adicione o botão
+          if (nav) {
+            nav.innerHTML = ''; // Limpa o conteúdo atual do nav (se houver)
+            nav.appendChild(submitButton); // Adiciona o novo botão de submit
+          }
+        }
+      }
+
+      // Inicia a verificação se o elemento está presente
+      waitForElement();
+    });
+
+  </script>
+
+  <script>
+    if ('WebSocket' in window) {
+      (function () {
+        function refreshCSS() {
+          var sheets = [].slice.call(document.getElementsByTagName("link"));
+          var head = document.getElementsByTagName("head")[0];
+          for (var i = 0; i < sheets.length; ++i) {
+            var elem = sheets[i];
+            var parent = elem.parentElement || head;
+            parent.removeChild(elem);
+            var rel = elem.rel;
+            if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+              var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+              elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+            }
+            parent.appendChild(elem);
+          }
+        }
+        var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+        var address = protocol + window.location.host + window.location.pathname + '/ws';
+        var socket = new WebSocket(address);
+        socket.onmessage = function (msg) {
+          if (msg.data == 'reload') window.location.reload();
+          else if (msg.data == 'refreshcss') refreshCSS();
+        };
+        if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+          console.log('Live reload enabled.');
+          sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+        }
+      })();
+    } else {
+      console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+    }
+  </script>
   <script>
     if ('WebSocket' in window) {
       (function () {
