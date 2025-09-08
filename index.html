@@ -1,15 +1,18 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Multi-Step Form</title>
-  
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+
   <style>
     /* ===== RESET & BASE STYLES ===== */
     * {
@@ -122,6 +125,20 @@
       height: 40px;
     }
 
+    .hs-button.primary {
+      background: #fe6337;
+      color: #fff;
+      border-color: #fe6337;
+      display: block;
+      width: 100%;
+      height: 40px;
+    }
+    .hs-button.primary[disabled] {
+      background: #a8a8a8;
+      border-color: #a8a8a8;
+      color: #fff;
+    }
+
     .msf-btn.primary[disabled] {
       background: #a8a8a8;
       border-color: #a8a8a8;
@@ -226,8 +243,8 @@
     }
 
     ul.no-list.hs-error-msgs.inputs-list {
-    position: absolute;
-}
+      position: absolute;
+    }
 
     li {
       list-style-type: none;
@@ -254,6 +271,7 @@
 
     /* ===== RESPONSIVE DESIGN ===== */
     @media (max-width: 800px) {
+
       fieldset.form-columns-2,
       fieldset.form-columns-3 {
         flex-direction: column;
@@ -262,254 +280,360 @@
       .hs-form-field {
         width: 100% !important;
       }
+
       .form-wrapper {
         margin: 0 24px;
       }
+
       .banner {
         margin-bottom: -180px;
       }
     }
 
     .radio-group {
-  display: none;
-  margin-left: 20px; /* optional for indentation */
-}
+      display: none;
+      margin-left: 20px;
+      /* optional for indentation */
+    }
 
-input[type="checkbox" i] {
-    width: max-content!important;
-    height: max-content;
-    margin-right: 4px;
-}
+    input[type="checkbox" i] {
+      width: max-content !important;
+      height: max-content;
+      margin-right: 4px;
+    }
 
-.building_occupancy_type0 {
-    display: flex;
-}
+    .building_occupancy_type0 {
+      display: flex;
+    }
 
-li.hs-form-checkbox {
-    padding: 12px 16px;
-    border-bottom: 1px solid #c0c0c0;
-}
+    li.hs-form-checkbox {
+      padding: 12px 16px;
+      border-bottom: 1px solid #c0c0c0;
+    }
 
-/* DROPDOWN */
-.dropdown{border:1px solid #ccc;border-radius:8px;overflow:hidden;background:#fff}
-.dropdown__button{width:100%;appearance:none;background:#fff;border:0;padding:14px 16px;text-align:left;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-.dropdown__button:focus{outline:2px solid #84caff;outline-offset:2px}
-.dropdown__chev{transition:transform .2s ease}
-.dropdown[aria-expanded="true"] .dropdown__chev{transform:rotate(180deg)}
-.dropdown__panel{display:none;border-top:1px solid #eef2f6;}
-.dropdown[aria-expanded="true"] .dropdown__panel{display:block}
+    /* DROPDOWN */
+    .dropdown {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff
+    }
 
-/* LIST + CHOICES */
-.inputs-list{margin:0;padding:0}
-.inputs-list>li{list-style:none;}
-.inputs-list>li:last-child{border-bottom:0}
-.hs-form-checkbox>label{display:inline-flex;align-items:end;gap:8px;cursor:pointer;font-weight:600}
-input[type="checkbox"]{width:18px;height:18px;accent-color:#fe6337}
-.radio-group{display:none;margin:8px 0 0 26px}
-.radio-group .inputs-list>li{border:0;}
-.radio-group label{display:inline-flex;align-items:center;font-weight:400;cursor:pointer}
-input[type="radio"]{accent-color:#fe6337}
+    .dropdown__button {
+      width: 100%;
+      appearance: none;
+      background: #fff;
+      border: 0;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
 
-/* INLINE ERROR */
-.validation-error{color:#ef4444;font-size:12px;display:block;margin-top:6px}
+    .dropdown__button:focus {
+      outline: 2px solid #84caff;
+      outline-offset: 2px
+    }
 
-.building-occupancy-error {
-    color: red;
-    font-size: 12px;
-    margin-top: 8px;
-    padding: 8px;
-    border-radius: 4px;
-    font-weight: 500;
-    position: absolute;
-}
+    .dropdown__chev {
+      transition: transform .2s ease
+    }
 
-li.hs-form-checkbox:hover {
-    background-color: #f5f5f5;
-}
+    .dropdown[aria-expanded="true"] .dropdown__chev {
+      transform: rotate(180deg)
+    }
 
-.input {
-    margin-right: 0px!important;
-}
+    .dropdown__panel {
+      display: none;
+      border-top: 1px solid #eef2f6;
+    }
 
-/* Checkbox */
-input[type="checkbox"] {
-  appearance: none;
-  width: 18px!important;
-  height: 18px!important;
-  border: 2px solid #c7cdd3;
-  border-radius: 4px;
-  background: #fff;
-  display: inline-block;
-  position: relative;
-}
-input[type="checkbox"]:checked {
-  background: #13828A;            /* box fill color */
-  border-color: #13828A;
-}
-input[type="checkbox"]:checked::after {
-  content: "";
-  position: absolute;
-  inset: 2px 5px 5px 2px;         /* draws the checkmark */
-  border: solid #fff;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
+    .dropdown[aria-expanded="true"] .dropdown__panel {
+      display: block
+    }
 
-/* Radio (custom) */
-input[type="radio"] {
-  appearance: none;
-  width: 18px !important;
-  height: 18px !important;
-  border-radius: 50%;
-  background: #fff;
-  position: relative;
-  display: inline-block !important;
-  vertical-align: bottom;
-  margin-right: 8px;
-}
+    /* LIST + CHOICES */
+    .inputs-list {
+      margin: 0;
+      padding: 0
+    }
 
-input[type="radio"]::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;                   /* inner dot size */
-  height: 10px;
-  background: #13828A;           /* dot color */
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform .12s ease;
-}
+    .inputs-list>li {
+      list-style: none;
+    }
 
-input[type="radio"]:checked {
-  border-color: #13828A;         /* outer ring color when checked */    /* optional focus-style ring */
-  outline-offset: 0;             /* adjust as desired */
-}
+    .inputs-list>li:last-child {
+      border-bottom: 0
+    }
 
-input[type="radio"]:checked::after {
-  transform: translate(-50%, -50%) scale(1);
-}
+    .hs-form-checkbox>label {
+      display: inline-flex;
+      align-items: end;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 600
+    }
 
-.hs-dependent-field {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-}
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #fe6337
+    }
 
-.hs_do_you_have_cad_files_.hs-do_you_have_cad_files_.hs-fieldtype-select.field.hs-form-field {
-    width: 100%;
-}
+    .radio-group {
+      display: none;
+      margin: 8px 0 0 26px
+    }
 
-.hs_upload_cad_files.hs-upload_cad_files.hs-fieldtype-file.field.hs-form-field {
-    width: 100%;
-    margin-top: 16px;
-}
+    .radio-group .inputs-list>li {
+      border: 0;
+    }
 
-  /* ===== Image picker for "How would you like us to show wiring pathways?" ===== */
-  .pathway-picker {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(180px, 1fr));
-    gap: 16px;
-    margin-top: 8px;
-  }
+    .radio-group label {
+      display: inline-flex;
+      align-items: center;
+      font-weight: 400;
+      cursor: pointer
+    }
 
-  .pathway-card {
-    border: 1px solid #cfd6dd;
-    border-radius: 12px;
-    background: #fff;
-    padding: 12px;
-    cursor: pointer;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 10px;
-    transition: box-shadow .15s ease, border-color .15s ease, transform .02s ease;
-    outline: none;
-    width: 95%;
-  }
+    input[type="radio"] {
+      accent-color: #fe6337
+    }
 
-  .pathway-card:active { transform: translateY(1px); }
-  .pathway-card:focus-visible { outline: 2px solid #84caff; outline-offset: 2px; }
+    /* INLINE ERROR */
+    .validation-error {
+      color: #ef4444;
+      font-size: 12px;
+      display: block;
+      margin-top: 6px
+    }
 
-  .pathway-card[data-selected="true"] {
-    border-color: #13828A;
-    box-shadow: 0 0 0 3px rgba(19,130,138,.15);
-  }
+    .building-occupancy-error {
+      color: red;
+      font-size: 12px;
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      position: absolute;
+    }
 
-  .pathway-card__img {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    border-radius: 8px;
-    background: #f4f6f8;
-  }
+    li.hs-form-checkbox:hover {
+      background-color: #f5f5f5;
+    }
 
-  .pathway-card__title {
-    font-weight: 700;
-    font-size: 14px;
-    color: #27313a;
-  }
+    .input {
+      margin-right: 0px !important;
+    }
 
-  .pathway-card__hint {
-    font-size: 12px;
-    color: #6b7280;
-  }
+    /* Checkbox */
+    input[type="checkbox"] {
+      appearance: none;
+      width: 18px !important;
+      height: 18px !important;
+      border: 2px solid #c7cdd3;
+      border-radius: 4px;
+      background: #fff;
+      display: inline-block;
+      position: relative;
+    }
 
-  /* Hide the native select but keep it in the a11y tree & layout flow for HubSpot */
-  .hs-pathway-select.is-visually-hidden {
-    position: absolute !important;
-    opacity: 0 !important;
-    width: 1px !important;
-    height: 1px !important;
-    pointer-events: none !important;
-  }
+    input[type="checkbox"]:checked {
+      background: #13828A;
+      /* box fill color */
+      border-color: #13828A;
+    }
 
-  /* small screens */
-  @media (max-width: 560px) {
-    .pathway-picker { grid-template-columns: 1fr; }
-  }
+    input[type="checkbox"]:checked::after {
+      content: "";
+      position: absolute;
+      inset: 2px 5px 5px 2px;
+      /* draws the checkmark */
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
 
-  /* inline error (optional – HubSpot may add its own) */
-  .pathway-error {
-    color: #ef4444;
-    font-size: 12px;
-    margin-top: 8px;
-    display: none;
-  }
-  .pathway-error.is-visible { display: block; }
+    /* Radio (custom) */
+    input[type="radio"] {
+      appearance: none;
+      width: 18px !important;
+      height: 18px !important;
+      border-radius: 50%;
+      background: #fff;
+      position: relative;
+      display: inline-block !important;
+      vertical-align: bottom;
+      margin-right: 8px;
+    }
 
-  /* Hide the native dropdown for "How would you like us to show wiring pathways?" */
-#how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4{
-  position: absolute !important;
-  opacity: 0 !important;
-  width: 1px !important;
-  height: 1px !important;
-  pointer-events: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
+    input[type="radio"]::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      /* inner dot size */
+      height: 10px;
+      background: #13828A;
+      /* dot color */
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform .12s ease;
+    }
 
-/* collapse any leftover spacing from HubSpot's input wrapper */
-.hs-how_would_you_like_us_to_show_wiring_pathways_ .input{
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
+    input[type="radio"]:checked {
+      border-color: #13828A;
+      /* outer ring color when checked */
+      /* optional focus-style ring */
+      outline-offset: 0;
+      /* adjust as desired */
+    }
 
-textarea {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    min-height: 80px;
-    margin-top: 8px;
-}
+    input[type="radio"]:checked::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
 
-/* Global error shown under the dropdown */
-.dropdown-error{color:#ef4444;font-size:12px;margin:8px 0 0 4px;display:none}
-.dropdown-error.is-visible{display:block}
+    .hs-dependent-field {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
 
+    .hs_do_you_have_cad_files_.hs-do_you_have_cad_files_.hs-fieldtype-select.field.hs-form-field {
+      width: 100%;
+    }
 
+    .hs_upload_cad_files.hs-upload_cad_files.hs-fieldtype-file.field.hs-form-field {
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    /* ===== Image picker for "How would you like us to show wiring pathways?" ===== */
+    .pathway-picker {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .pathway-card {
+      border: 1px solid #cfd6dd;
+      border-radius: 12px;
+      background: #fff;
+      padding: 12px;
+      cursor: pointer;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+      transition: box-shadow .15s ease, border-color .15s ease, transform .02s ease;
+      outline: none;
+      width: 95%;
+    }
+
+    .pathway-card:active {
+      transform: translateY(1px);
+    }
+
+    .pathway-card:focus-visible {
+      outline: 2px solid #84caff;
+      outline-offset: 2px;
+    }
+
+    .pathway-card[data-selected="true"] {
+      border-color: #13828A;
+      box-shadow: 0 0 0 3px rgba(19, 130, 138, .15);
+    }
+
+    .pathway-card__img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #f4f6f8;
+    }
+
+    .pathway-card__title {
+      font-weight: 700;
+      font-size: 14px;
+      color: #27313a;
+    }
+
+    .pathway-card__hint {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Hide the native select but keep it in the a11y tree & layout flow for HubSpot */
+    .hs-pathway-select.is-visually-hidden {
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 1px !important;
+      height: 1px !important;
+      pointer-events: none !important;
+    }
+
+    /* small screens */
+    @media (max-width: 560px) {
+      .pathway-picker {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* inline error (optional – HubSpot may add its own) */
+    .pathway-error {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .pathway-error.is-visible {
+      display: block;
+    }
+
+    /* Hide the native dropdown for "How would you like us to show wiring pathways?" */
+    #how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4 {
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 1px !important;
+      height: 1px !important;
+      pointer-events: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* collapse any leftover spacing from HubSpot's input wrapper */
+    .hs-how_would_you_like_us_to_show_wiring_pathways_ .input {
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    textarea {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      min-height: 80px;
+      margin-top: 8px;
+    }
+
+    /* Global error shown under the dropdown */
+    .dropdown-error {
+      color: #ef4444;
+      font-size: 12px;
+      margin: 8px 0 0 4px;
+      display: none
+    }
+
+    .dropdown-error.is-visible {
+      display: block
+    }
   </style>
 
-  
+
 </head>
 
 <body>
@@ -520,11 +644,13 @@ textarea {
     <!-- Header with Back button and Logo -->
     <div class="msf-header">
       <button type="button" class="msf-btn back" id="globalBackBtn">Back</button>
-      <img class="msf-header__logo" alt="Logo" width="240" src="https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/logo-jem-1.png" />
+      <img class="msf-header__logo" alt="Logo" width="240"
+        src="https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/logo-jem-1.png" />
     </div>
 
     <h2>Professional Services Request</h2>
-    <p>We strive to deliver the best service for our customers. In order to do that, we need a little bit more information about the project to best serve you. </p>
+    <p>We strive to deliver the best service for our customers. In order to do that, we need a little bit more
+      information about the project to best serve you. </p>
 
     <!-- HubSpot Form -->
     <script charset="utf-8" type="text/javascript" src="http://js.hsforms.net/forms/embed/v2.js"></script>
@@ -537,54 +663,54 @@ textarea {
     </script>
   </div>
 
-<script>
-/* Event delegation: works for injected content */
-document.addEventListener('change', (e) => {
-  /* Top-level checkbox toggles visibility of its sibling .radio-group */
-  if (e.target.matches('.hs-form-checkbox > label > input[type="checkbox"]')) {
-    const li = e.target.closest('.hs-form-checkbox');
-    const radioGroup = li.querySelector('.radio-group');
-    if (radioGroup) {
-      radioGroup.style.display = e.target.checked ? 'block' : 'none';
-      radioGroup.setAttribute('aria-hidden', e.target.checked ? 'false' : 'true');
+  <script>
+    /* Event delegation: works for injected content */
+    document.addEventListener('change', (e) => {
+      /* Top-level checkbox toggles visibility of its sibling .radio-group */
+      if (e.target.matches('.hs-form-checkbox > label > input[type="checkbox"]')) {
+        const li = e.target.closest('.hs-form-checkbox');
+        const radioGroup = li.querySelector('.radio-group');
+        if (radioGroup) {
+          radioGroup.style.display = e.target.checked ? 'block' : 'none';
+          radioGroup.setAttribute('aria-hidden', e.target.checked ? 'false' : 'true');
 
-      /* If unchecked, clear any radios inside */
-      if (!e.target.checked) {
-        radioGroup.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+          /* If unchecked, clear any radios inside */
+          if (!e.target.checked) {
+            radioGroup.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+          }
+        }
       }
+
+      /* If a radio is picked, ensure its parent checkbox is checked & visible */
+      if (e.target.matches('.radio-group input[type="radio"]')) {
+        const li = e.target.closest('.hs-form-checkbox');                  // go up to the group <li>
+        const parentCheckbox = li?.querySelector(':scope > label input[type="checkbox"]'); // only the top-level checkbox
+        if (parentCheckbox && !parentCheckbox.checked) {
+          parentCheckbox.checked = true;
+          /* Trigger change so the radio group becomes visible */
+          parentCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+    });
+
+    /* Initialize visibility for any pre-checked boxes (callable anytime, including after you inject the fieldset) */
+    function initRadioVisibility() {
+      document.querySelectorAll('.hs-form-checkbox > label > input[type="checkbox"]').forEach(cb => {
+        const li = cb.closest('.hs-form-checkbox');
+        const radioGroup = li.querySelector('.radio-group');
+        if (radioGroup) {
+          radioGroup.style.display = cb.checked ? 'block' : 'none';
+          radioGroup.setAttribute('aria-hidden', cb.checked ? 'false' : 'true');
+        }
+      });
     }
-  }
 
-  /* If a radio is picked, ensure its parent checkbox is checked & visible */
-  if (e.target.matches('.radio-group input[type="radio"]')) {
-    const li = e.target.closest('.hs-form-checkbox');                  // go up to the group <li>
-    const parentCheckbox = li?.querySelector(':scope > label input[type="checkbox"]'); // only the top-level checkbox
-    if (parentCheckbox && !parentCheckbox.checked) {
-      parentCheckbox.checked = true;
-      /* Trigger change so the radio group becomes visible */
-      parentCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-  }
-});
+    /* Run on load */
+    document.addEventListener('DOMContentLoaded', initRadioVisibility);
 
-/* Initialize visibility for any pre-checked boxes (callable anytime, including after you inject the fieldset) */
-function initRadioVisibility() {
-  document.querySelectorAll('.hs-form-checkbox > label > input[type="checkbox"]').forEach(cb => {
-    const li = cb.closest('.hs-form-checkbox');
-    const radioGroup = li.querySelector('.radio-group');
-    if (radioGroup) {
-      radioGroup.style.display = cb.checked ? 'block' : 'none';
-      radioGroup.setAttribute('aria-hidden', cb.checked ? 'false' : 'true');
-    }
-  });
-}
-
-/* Run on load */
-document.addEventListener('DOMContentLoaded', initRadioVisibility);
-
-/* ALSO call this right after you append the new fieldset */
-window.initRadioVisibility = initRadioVisibility; // expose if you want to call it explicitly
-</script>
+    /* ALSO call this right after you append the new fieldset */
+    window.initRadioVisibility = initRadioVisibility; // expose if you want to call it explicitly
+  </script>
 
 
   <!-- Multi-Step Form Logic -->
@@ -694,66 +820,66 @@ window.initRadioVisibility = initRadioVisibility; // expose if you want to call 
         return isValid;
       }
 
-      function setOccGlobalError(show){
-  const el = document.getElementById('occGlobalErr');
-  if (!el) return;
-  el.classList.toggle('is-visible', !!show);
-}
-
-function validateBuildingOccupancySection(showErrors = false){
-  const container = document.querySelector('.hs_building_occupancy_type');
-  if (!container) return true;
-
-  let anyChecked = false;
-  let missingSub = false;
-
-  container.querySelectorAll(':scope .hs-form-checkbox').forEach(li => {
-    const cb = li.querySelector(':scope > label input[type="checkbox"]');
-    const radios = li.querySelectorAll('.radio-group input[type="radio"]');
-    const anyRadio = Array.from(radios).some(r => r.checked);
-
-    // per-row inline error (optional – you can drop this if you want only the global message)
-    const ensureRowErr = (msg) => {
-      let e = li.querySelector('.validation-error');
-      if (!e) { e = document.createElement('span'); e.className = 'validation-error'; li.appendChild(e); }
-      e.textContent = msg;
-    };
-    const clearRowErr = () => li.querySelector('.validation-error')?.remove();
-
-    if (cb?.checked) {
-      anyChecked = true;
-      if (radios.length && !anyRadio) {
-        missingSub = true;
-        if (showErrors) ensureRowErr('Please select at least one option.');
-      } else if (showErrors) {
-        clearRowErr();
+      function setOccGlobalError(show) {
+        const el = document.getElementById('occGlobalErr');
+        if (!el) return;
+        el.classList.toggle('is-visible', !!show);
       }
-    } else if (showErrors) {
-      clearRowErr();
-    }
-  });
 
-  const ok = anyChecked && !missingSub;
+      function validateBuildingOccupancySection(showErrors = false) {
+        const container = document.querySelector('.hs_building_occupancy_type');
+        if (!container) return true;
 
-  if (showErrors && !ok) {
-    // open the dropdown so the user sees the radios & errors
-    const dd = container.closest('.dropdown');
-    if (dd) {
-      dd.setAttribute('aria-expanded','true');
-      dd.querySelector('.dropdown__button')?.setAttribute('aria-expanded','true');
-      const p = dd.querySelector('.dropdown__panel'); if (p) p.hidden = false;
-    }
-  }
-  // show global message only when subcategory missing
-  setOccGlobalError(showErrors && missingSub);
+        let anyChecked = false;
+        let missingSub = false;
 
-  return ok;
-}
+        container.querySelectorAll(':scope .hs-form-checkbox').forEach(li => {
+          const cb = li.querySelector(':scope > label input[type="checkbox"]');
+          const radios = li.querySelectorAll('.radio-group input[type="radio"]');
+          const anyRadio = Array.from(radios).some(r => r.checked);
 
-// hide the global message as the user changes anything in this section
-document.addEventListener('change', (e) => {
-  if (e.target.closest('.hs_building_occupancy_type')) setOccGlobalError(false);
-});
+          // per-row inline error (optional – you can drop this if you want only the global message)
+          const ensureRowErr = (msg) => {
+            let e = li.querySelector('.validation-error');
+            if (!e) { e = document.createElement('span'); e.className = 'validation-error'; li.appendChild(e); }
+            e.textContent = msg;
+          };
+          const clearRowErr = () => li.querySelector('.validation-error')?.remove();
+
+          if (cb?.checked) {
+            anyChecked = true;
+            if (radios.length && !anyRadio) {
+              missingSub = true;
+              if (showErrors) ensureRowErr('Please select at least one option.');
+            } else if (showErrors) {
+              clearRowErr();
+            }
+          } else if (showErrors) {
+            clearRowErr();
+          }
+        });
+
+        const ok = anyChecked && !missingSub;
+
+        if (showErrors && !ok) {
+          // open the dropdown so the user sees the radios & errors
+          const dd = container.closest('.dropdown');
+          if (dd) {
+            dd.setAttribute('aria-expanded', 'true');
+            dd.querySelector('.dropdown__button')?.setAttribute('aria-expanded', 'true');
+            const p = dd.querySelector('.dropdown__panel'); if (p) p.hidden = false;
+          }
+        }
+        // show global message only when subcategory missing
+        setOccGlobalError(showErrors && missingSub);
+
+        return ok;
+      }
+
+      // hide the global message as the user changes anything in this section
+      document.addEventListener('change', (e) => {
+        if (e.target.closest('.hs_building_occupancy_type')) setOccGlobalError(false);
+      });
 
       function buildSteps(form) {
         const steps = [];
@@ -823,8 +949,8 @@ document.addEventListener('change', (e) => {
             }
 
             if (currentTitle === 'Project Information' && !validateBuildingOccupancySection(true)) {
-  return; // block navigation
-}
+              return; // block navigation
+            }
 
             if (currentTitle === 'Plans and Additional Information') {
               const select = document.querySelector('#type_of_services_required_-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
@@ -854,8 +980,8 @@ document.addEventListener('change', (e) => {
               valid = valid && validateTakeOffSectionFields();
             }
             if (step.dataset.title === 'Project Information') {
-  valid = valid && validateBuildingOccupancySection(false);
-}
+              valid = valid && validateBuildingOccupancySection(false);
+            }
             next.disabled = !valid;
           };
 
@@ -869,7 +995,7 @@ document.addEventListener('change', (e) => {
             if (buildingOccupancyContainer) {
               const checkboxes = buildingOccupancyContainer.querySelectorAll('input[name="building_occupancy_type"]');
               const radios = buildingOccupancyContainer.querySelectorAll('.radio-group input[type="radio"]');
-              
+
               [...checkboxes, ...radios].forEach(ctrl => {
                 ['change'].forEach(ev => ctrl.addEventListener(ev, updateNextState));
               });
@@ -977,14 +1103,14 @@ document.addEventListener('change', (e) => {
     })();
   </script>
 
-<script>
-  // whenever anything inside the occupancy container changes, recompute the active step validity
-  document.addEventListener('change', (e) => {
-    if (e.target.closest('.hs_building_occupancy_type')) {
-      document.querySelector('.msf-step.is-active')?.__updateNextState?.();
-    }
-  });
-  </script>  
+  <script>
+    // whenever anything inside the occupancy container changes, recompute the active step validity
+    document.addEventListener('change', (e) => {
+      if (e.target.closest('.hs_building_occupancy_type')) {
+        document.querySelector('.msf-step.is-active')?.__updateNextState?.();
+      }
+    });
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -1030,21 +1156,17 @@ document.addEventListener('change', (e) => {
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Função para verificar se o elemento com data-title="Project Information" existe
       function waitForElement() {
         const targetElement = document.querySelector('[data-title="Project Information"]');
 
-        // Se o elemento existe, chama a função de inicialização
         if (targetElement) {
           init();
         } else {
-          // Caso o elemento não exista ainda, observe o DOM
-          setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
+          setTimeout(waitForElement, 100);  
         }
       }
 
       function init() {
-        // Identificando o fieldset onde os elementos serão injetados
         const fieldset = document.querySelector('.form-columns-1 .hs_bulding');
         console.log(fieldset)
         if (!fieldset) {
@@ -1154,17 +1276,14 @@ document.addEventListener('change', (e) => {
 
         fieldset.insertAdjacentHTML('beforeend', newFieldsetHTML);
 
-        // wire Next-button state to the newly inserted inputs
-const projectStep = fieldset.closest('.msf-step');
-const bump = () => projectStep?.__updateNextState?.();
+        const projectStep = fieldset.closest('.msf-step');
+        const bump = () => projectStep?.__updateNextState?.();
 
-fieldset.querySelectorAll('input[name="building_occupancy_type"], .radio-group input[type="radio"]')
-  .forEach(el => el.addEventListener('change', bump));
+        fieldset.querySelectorAll('input[name="building_occupancy_type"], .radio-group input[type="radio"]')
+          .forEach(el => el.addEventListener('change', bump));
 
-// run once now so Next becomes disabled until the user completes the section
-bump();
+        bump();
 
-        // >>> ADD (Dropdown toggle init)
         const dd = fieldset.querySelector('.dropdown');
         const btn = fieldset.querySelector('.dropdown__button');
         const panel = fieldset.querySelector('.dropdown__panel');
@@ -1178,16 +1297,14 @@ bump();
           panel.hidden = !open;
         });
 
-        // global error below the dropdown
-if (!document.getElementById('occGlobalErr')) {
-  const occGlobalErr = document.createElement('div');
-  occGlobalErr.id = 'occGlobalErr';
-  occGlobalErr.className = 'dropdown-error';
-  occGlobalErr.textContent = 'Please select at least one subcategory.';
-  dd.insertAdjacentElement('afterend', occGlobalErr);
-}
+        if (!document.getElementById('occGlobalErr')) {
+          const occGlobalErr = document.createElement('div');
+          occGlobalErr.id = 'occGlobalErr';
+          occGlobalErr.className = 'dropdown-error';
+          occGlobalErr.textContent = 'Please select at least one subcategory.';
+          dd.insertAdjacentElement('afterend', occGlobalErr);
+        }
 
-        // Keep radios hidden unless checkbox is pre-checked
         fieldset.querySelectorAll('.hs-form-checkbox > label > input[type="checkbox"]').forEach(cb => {
           const li = cb.closest('.hs-form-checkbox');
           const rg = li.querySelector('.radio-group');
@@ -1199,57 +1316,47 @@ if (!document.getElementById('occGlobalErr')) {
     });
 
 
-    // Função para monitorar os inputs e atualizar o campo de texto
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     const radios = document.querySelectorAll('input[type="radio"]');
     const outputField = document.getElementById('bulding-b1918b8e-61ec-4407-94bd-8c949ebc59a4'); // Campo de texto que vai receber os dados
 
-    // Função para atualizar o campo de texto com as seleções
     function updateOutput() {
       let output = '';
 
-      // Adiciona as respostas dos checkboxes
       checkboxes.forEach(function (checkbox) {
         if (checkbox.checked) {
           output += checkbox.nextElementSibling.textContent.trim() + ', ';
         }
       });
 
-      // Adiciona as respostas dos rádios
       radios.forEach(function (radio) {
         if (radio.checked) {
           output += radio.nextElementSibling.textContent.trim() + ', ';
         }
       });
 
-      // Remove a última vírgula e espaço
       if (output.endsWith(', ')) {
         output = output.slice(0, -2);
       }
 
-      // Atualiza o campo de texto
       outputField.value = output;
     }
 
-    // Função para validar se uma checkbox foi selecionada e se os radios associados estão marcados
     function validateCheckboxAndRadio() {
       let valid = true;
 
       checkboxes.forEach(function (checkbox) {
-        // Verifica se a checkbox está marcada
         if (checkbox.checked) {
           const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
           const isAnyRadioSelected = Array.from(associatedRadios).some(radio => radio.checked);
 
-          // Se não houver radio selecionado e a checkbox estiver marcada, a validação falha
           if (!isAnyRadioSelected) {
             valid = false;
             showValidationError(checkbox.closest('li'), 'Please select at least one option.');
           } else {
-            hideValidationError(checkbox.closest('li')); // Esconde a mensagem de erro se a validação for bem-sucedida
+            hideValidationError(checkbox.closest('li'));
           }
         } else {
-          // Caso a checkbox esteja desmarcada, remove a mensagem de erro, se houver
           hideValidationError(checkbox.closest('li'));
         }
       });
@@ -1258,7 +1365,6 @@ if (!document.getElementById('occGlobalErr')) {
     }
 
 
-    // Função para mostrar o erro de validação
     function showValidationError(container, message) {
       let errorElement = container.querySelector('.validation-error');
       if (!errorElement) {
@@ -1272,7 +1378,6 @@ if (!document.getElementById('occGlobalErr')) {
       errorElement.textContent = message;
     }
 
-    // Função para ocultar o erro de validação
     function hideValidationError(container) {
       const errorElement = container.querySelector('.validation-error');
       if (errorElement) {
@@ -1280,16 +1385,14 @@ if (!document.getElementById('occGlobalErr')) {
       }
     }
 
-    // Adiciona event listeners para mudanças nos checkboxes e rádios
     checkboxes.forEach(function (checkbox) {
       checkbox.addEventListener('change', function () {
         updateOutput();
         if (!checkbox.checked) {
-          // Desmarcar todos os rádios quando a checkbox for desmarcada
           const associatedRadios = checkbox.closest('li').querySelectorAll('.radio-group input[type="radio"]');
           associatedRadios.forEach(radio => radio.checked = false);
         }
-        validateCheckboxAndRadio(); // Validação após alteração
+        validateCheckboxAndRadio();
       });
     });
 
@@ -1298,21 +1401,19 @@ if (!document.getElementById('occGlobalErr')) {
         console.log('Radio selecionado');
         updateOutput();
 
-        // Acesse a checkbox associada ao radio, que está dentro da mesma <label> do <input> de checkbox
         const checkboxLabel = radio.closest('li').querySelector('label');
         const checkbox = checkboxLabel ? checkboxLabel.querySelector('input[type="checkbox"]') : null;
 
-        console.log(checkbox); // Debug para ver o que é encontrado
+        console.log(checkbox);
 
         if (checkbox && !checkbox.checked) {
-          checkbox.checked = true; // Marca a checkbox associada ao radio
+          checkbox.checked = true;
         }
 
-        validateCheckboxAndRadio(); // Validação após alteração
+        validateCheckboxAndRadio();
       });
     });
 
-    // Inicia a verificação se o elemento está presente
     waitForElement();
   </script>
 
@@ -1324,19 +1425,15 @@ if (!document.getElementById('occGlobalErr')) {
         phoneInput.addEventListener("input", function (e) {
           let value = e.target.value;
 
-          // Permite números e o caractere + em qualquer posição
           value = value.replace(/[^\d+]/g, "");
 
-          // Limita os números a 10 dígitos, mas mantém o + se houver
           const plusCount = (value.match(/\+/g) || []).length;
           let numbersOnly = value.replace(/\D/g, "");
           if (numbersOnly.length > 10) numbersOnly = numbersOnly.slice(0, 10);
 
-          // Reconstrói o valor mantendo os + originais
           let nonDigits = value.replace(/\d/g, "");
           value = numbersOnly + nonDigits.replace(/\+/g, "+");
 
-          // Formata apenas os números
           let formattedNumbers = numbersOnly;
           if (numbersOnly.length > 6) {
             formattedNumbers = `(${numbersOnly.slice(0, 3)}) ${numbersOnly.slice(3, 6)}-${numbersOnly.slice(6)}`;
@@ -1346,16 +1443,14 @@ if (!document.getElementById('occGlobalErr')) {
             formattedNumbers = `(${numbersOnly}`;
           }
 
-          // Adiciona os + de volta nas posições que o usuário digitou
           e.target.value = formattedNumbers + nonDigits.replace(/\d/g, "");
         });
 
-        clearInterval(waitInterval); // Para de verificar quando encontrou
+        clearInterval(waitInterval);
       }
 
     }
 
-    // Verifica a cada 200ms até o elemento existir
     const waitInterval = setInterval(waitForPhoneInput, 200);
 
   </script>
@@ -1364,53 +1459,50 @@ if (!document.getElementById('occGlobalErr')) {
     const waitInterval1 = setInterval(() => {
       const takeOffPriceInput = document.querySelector('input[name="take_off_price"]');
       if (takeOffPriceInput) {
-        takeOffPriceInput.disabled = true; // desabilita
-        clearInterval(waitInterval1); // para de checar
+        takeOffPriceInput.disabled = true;
+        clearInterval(waitInterval1);
       }
       const designPriceInput = document.querySelector('input[name="design_price"]');
       if (designPriceInput) {
-        designPriceInput.disabled = true; // desabilita
-        clearInterval(waitInterval1); // para de checar
+        designPriceInput.disabled = true;
+        clearInterval(waitInterval1);
       }
-    }, 100); // checa a cada 100ms
+    }, 100);
 
     document.addEventListener('DOMContentLoaded', function () {
-      // Função para verificar se o elemento com data-title="Take-off Information" existe
       function waitForElement() {
         const targetElement = document.querySelector('[data-title="Take-off Information"]');
 
-        // Se o elemento existe, chama a função de inicialização
+
         if (targetElement) {
           init();
         } else {
-          // Caso o elemento não exista ainda, observe o DOM
-          setTimeout(waitForElement, 100);  // Tenta novamente após 100ms
+
+          setTimeout(waitForElement, 100);
         }
       }
 
       function init() {
-        // Encontrando a section com data-title="Take-off Information"
         const targetSection = document.querySelector('[data-title="Take-off Information"]');
 
         if (targetSection) {
-          // Criar o botão dinamicamente
-          const submitButton = document.createElement('button');
-          submitButton.type = 'submit'; // Define como botão de envio
-          submitButton.classList.add('msf-btn', 'primary'); // Adiciona classes para estilo
-          submitButton.textContent = 'Proceed with Take-off'; // Texto do botão
 
-          // Encontrando o elemento msf-nav onde o botão será adicionado
+          const submitButton = document.createElement('button');
+          submitButton.type = 'submit';
+          submitButton.classList.add('msf-btn', 'primary');
+          submitButton.textContent = 'Proceed with Take-off';
+          submitButton.id = 'takeof_submit';
+
+
           const nav = targetSection.querySelector('.msf-nav');
 
-          // Verifique se a section contém o nav e adicione o botão
           if (nav) {
-            nav.innerHTML = ''; // Limpa o conteúdo atual do nav (se houver)
-            nav.appendChild(submitButton); // Adiciona o novo botão de submit
+            nav.innerHTML = '';
+            nav.appendChild(submitButton);
           }
         }
       }
 
-      // Inicia a verificação se o elemento está presente
       waitForElement();
     });
 
@@ -1450,6 +1542,231 @@ if (!document.getElementById('occGlobalErr')) {
       console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
     }
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let submitButton = null; // Inicializa o botão como null
+    
+    // Função para adicionar o asterisco vermelho nas labels de campos obrigatórios
+    function addRedAsterisk(labelId) {
+      const label = document.querySelector(labelId);
+      if (label && !label.innerHTML.includes('<span style="color: red;">*</span>')) {
+        label.innerHTML += ' <span style="color: red;">*</span>';
+      }
+    }
+
+    // Função que aplica a lógica de verificação
+    function initializeForm() {
+      // Lista de IDs das labels dos campos obrigatórios
+      const labelIds = [
+        '#label-facp_location-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#label-do_you_have_cad_files_-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#label-do_you_need_jem_to_stamp_your_drawings-b1918b8e-61ec-4407-94bd-8c949ebc59a4',
+        '#label-po_number__design_-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#label-nac_pathway0-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#label-total_number_of_devices-b1918b8e-61ec-4407-94bd-8c949ebc59a4',
+        '#label-slc_pathway-b1918b8e-61ec-4407-94bd-8c949ebc59a4',  // Radio button
+        '#label-nac_pathway-b1918b8e-61ec-4407-94bd-8c949ebc59a4',  // Radio button
+        '#label-isolator_modules-b1918b8e-61ec-4407-94bd-8c949ebc59a4', // Radio button
+        '#label-how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#label-are_you_adding_a_communicator_to_the_project_-b1918b8e-61ec-4407-94bd-8c949ebc59a4'   // Radio button
+      ];
+
+      // Lista de IDs dos campos (inputs, selects, radio buttons)
+      const inputIds = [
+        '#facp_location-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#do_you_have_cad_files_-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#do_you_need_jem_to_stamp_your_drawings-b1918b8e-61ec-4407-94bd-8c949ebc59a4',
+        '#po_number__design_-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#nac_pathway0-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#total_number_of_devices-b1918b8e-61ec-4407-94bd-8c949ebc59a4',
+        '#slc_pathway0-b1918b8e-61ec-4407-94bd-8c949ebc59a4',  // Radio button
+        '#nac_pathway0-b1918b8e-61ec-4407-94bd-8c949ebc59a4',  // Radio button
+        '#isolator_modules0-b1918b8e-61ec-4407-94bd-8c949ebc59a4', // Radio button
+        '#how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4', 
+        '#are_you_adding_a_communicator_to_the_project_0-b1918b8e-61ec-4407-94bd-8c949ebc59a4'   // Radio button
+      ];
+
+      // Adiciona o asterisco vermelho em todas as labels obrigatórias
+      labelIds.forEach(addRedAsterisk);
+
+      // Função para verificar se todos os campos obrigatórios estão preenchidos
+      function checkFields() {
+          let allFilled = true;
+
+          inputIds.forEach((inputId) => {
+              const field = document.querySelector(inputId);
+
+              if (field) {
+                  // Para campos de texto e selects, verifica se está vazio
+                  if ((field.tagName.toLowerCase() === 'input' || field.tagName.toLowerCase() === 'textarea' || field.tagName.toLowerCase() === 'select') && field.value.trim() === '') {
+                      allFilled = false;
+                  }
+
+                  // Para radio buttons, verifica se pelo menos um foi selecionado
+                  if (field.type === 'radio') {
+                      const group = document.getElementsByName(field.name);
+                      const isChecked = Array.from(group).some(radio => radio.checked);
+                      if (!isChecked) {
+                          allFilled = false;
+                      }
+                  }
+              }
+          });
+
+          // Obtém o botão de submit
+          submitButton = document.querySelector('.hs-button.primary.large');
+          
+          // Se todos os campos obrigatórios estiverem preenchidos, habilita o botão de envio, caso contrário, desabilita
+          if (submitButton) {
+              submitButton.disabled = !allFilled;
+          }
+      }
+
+      // Adiciona eventos de input, change e click nos campos
+      inputIds.forEach((inputId) => {
+          const field = document.querySelector(inputId);
+          
+          if (field) {
+              // Para campos de texto, select e textarea, adiciona 'input' para detectar alterações
+              if (field.tagName.toLowerCase() !== 'input' || field.type !== 'radio') {
+                  field.addEventListener('input', checkFields); 
+              }
+              // Para radio buttons, usa o evento 'change' para detectar seleção
+              if (field.type === 'radio') {
+                  field.addEventListener('change', checkFields);
+              }
+          }
+      });
+
+      // Faz a verificação inicial ao carregar a página
+      checkFields();
+    }
+
+    // Usando MutationObserver para garantir que o DOM da seção foi completamente carregado
+    const observer = new MutationObserver((mutationsList, observer) => {
+        // Verifica se o botão submit foi carregado
+        submitButton = document.querySelector('.hs-button.primary.large');
+        const section = document.querySelector('.msf-step.is-active');
+        
+        // Garantir que a seção e o botão submit foram carregados
+        if (submitButton && section && section.offsetParent !== null) {  // Garantir que a section e o botão estejam visíveis
+            initializeForm();
+            observer.disconnect();  // Desconecta o observer após inicializar
+        }
+    });
+
+    // Começa a observar mudanças no DOM para detectar quando o botão submit e a seção forem carregados
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+</script>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Usando MutationObserver para observar mudanças no DOM e garantir que o botão esteja disponível
+    const observer = new MutationObserver(() => {
+        const section = document.querySelector('[data-title="Take-off Information"]');
+        
+        if (section) {
+            const submitButton = section.querySelector('#takeof_submit');
+            
+            // Verifica se o botão de envio está presente
+            if (submitButton) {
+                // Agora que o botão foi encontrado, começa a verificação dos campos
+                const requiredFields = [
+                    section.querySelector('#scope0-b1918b8e-61ec-4407-94bd-8c949ebc59a4'), // Radio button 1
+                    section.querySelector('#scope1-b1918b8e-61ec-4407-94bd-8c949ebc59a4'), // Radio button 2
+                    section.querySelector('#what_is_the_due_date_for_submission_-b1918b8e-61ec-4407-94bd-8c949ebc59a4'), // Date field
+                    section.querySelector('#po_number-b1918b8e-61ec-4407-94bd-8c949ebc59a4') // PO Number field
+                ];
+
+                // Função para adicionar o asterisco vermelho diretamente nas labels dos campos obrigatórios
+                function addRedAsterisk() {
+                    // Asterisco vermelho para 'Scope'
+                    const scopeLabel = document.querySelector('#label-scope-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+                    if (scopeLabel && !scopeLabel.querySelector('span[style="color: red;"]')) {
+                        const asterisk = document.createElement('span');
+                        asterisk.style.color = 'red';
+                        asterisk.textContent = '*';
+                        scopeLabel.appendChild(asterisk); // Adiciona o asterisco diretamente na label
+                    }
+
+                    // Asterisco vermelho para 'What is the due date for submission?'
+                    const dueDateLabel = document.querySelector('#label-what_is_the_due_date_for_submission_-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+                    if (dueDateLabel && !dueDateLabel.querySelector('span[style="color: red;"]')) {
+                        const asterisk = document.createElement('span');
+                        asterisk.style.color = 'red';
+                        asterisk.textContent = '*';
+                        dueDateLabel.appendChild(asterisk); // Adiciona o asterisco diretamente na label
+                    }
+
+                    // Asterisco vermelho para 'PO Number'
+                    const poNumberLabel = document.querySelector('#label-po_number-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+                    if (poNumberLabel && !poNumberLabel.querySelector('span[style="color: red;"]')) {
+                        const asterisk = document.createElement('span');
+                        asterisk.style.color = 'red';
+                        asterisk.textContent = '*';
+                        poNumberLabel.appendChild(asterisk); // Adiciona o asterisco diretamente na label
+                    }
+                }
+
+                // Função para verificar se todos os campos obrigatórios foram preenchidos
+                function checkFields() {
+                    let allFilled = true;
+
+                    // Verificar se pelo menos um botão de rádio foi selecionado
+                    const radioChecked = (requiredFields[0].checked || requiredFields[1].checked);
+                    if (!radioChecked) {
+                        allFilled = false;
+                    }
+
+                    // Verificar se os campos de texto ou data estão preenchidos
+                    requiredFields.slice(2).forEach(field => {
+                        if (!field.value) {
+                            allFilled = false;
+                        }
+                    });
+
+                    // Habilitar/desabilitar o botão dependendo da validação
+                    if (allFilled) {
+                        submitButton.disabled = false;  // Ativa o botão de envio
+                        submitButton.style.backgroundColor = ''; // Reseta a cor de fundo
+                    } else {
+                        submitButton.disabled = true;  // Desativa o botão de envio
+                        submitButton.style.backgroundColor = 'gray'; // Muda a cor de fundo para cinza
+                    }
+                }
+
+                // Adicionar asterisco vermelho nas labels dos campos obrigatórios
+                addRedAsterisk();
+
+                // Verificar os campos assim que o DOM estiver pronto
+                checkFields();
+
+                // Adiciona eventos para verificar os campos sempre que houver alteração
+                requiredFields.forEach(field => {
+                    if (field) {
+                        if (field.type === "radio") {
+                            field.addEventListener('change', checkFields);  // Verifica se algum radio foi selecionado
+                        } else {
+                            field.addEventListener('input', checkFields);  // Verifica se os campos de texto ou data foram preenchidos
+                        }
+                    }
+                });
+
+                observer.disconnect();  // Desconecta o observer após encontrar e modificar o botão
+            }
+        }
+    });
+
+    // Começa a observar o corpo do documento por mudanças no DOM
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+
+</script>
+
   <script>
     if ('WebSocket' in window) {
       (function () {
@@ -1485,352 +1802,351 @@ if (!document.getElementById('occGlobalErr')) {
     }
   </script>
   <!-- >>> ADD (Delegated behavior + validation + summary) -->
-<script>
-(function () {
-  const containerSel = '.hs_building_occupancy_type';
-  const form = document.querySelector('#hsForm_b1918b8e-61ec-4407-94bd-8c949ebc59a4') || document.querySelector('form');
+  <script>
+    (function () {
+      const containerSel = '.hs_building_occupancy_type';
+      const form = document.querySelector('#hsForm_b1918b8e-61ec-4407-94bd-8c949ebc59a4') || document.querySelector('form');
 
-  function updateSummary() {
-    const container = document.querySelector(containerSel);
-    if (!container) return;
-    const groups = container.querySelectorAll(':scope .hs-form-checkbox');
-    const parts = [];
-    groups.forEach(li => {
-      const cb = li.querySelector(':scope > label input[type="checkbox"]');
-      const label = li.querySelector(':scope > label span')?.textContent?.trim() || '';
-      if (!cb || !cb.checked) return;
-      const selRadios = li.querySelectorAll('.radio-group input[type="radio"]:checked');
-      if (selRadios.length) {
-        const rtxt = Array.from(selRadios).map(r => r.nextElementSibling?.textContent?.trim() || '').join(', ');
-        parts.push(`${label}: ${rtxt}`);
-      } else {
-        parts.push(label);
+      function updateSummary() {
+        const container = document.querySelector(containerSel);
+        if (!container) return;
+        const groups = container.querySelectorAll(':scope .hs-form-checkbox');
+        const parts = [];
+        groups.forEach(li => {
+          const cb = li.querySelector(':scope > label input[type="checkbox"]');
+          const label = li.querySelector(':scope > label span')?.textContent?.trim() || '';
+          if (!cb || !cb.checked) return;
+          const selRadios = li.querySelectorAll('.radio-group input[type="radio"]:checked');
+          if (selRadios.length) {
+            const rtxt = Array.from(selRadios).map(r => r.nextElementSibling?.textContent?.trim() || '').join(', ');
+            parts.push(`${label}: ${rtxt}`);
+          } else {
+            parts.push(label);
+          }
+        });
+        const summaryField = document.getElementById('building_occupancy_summary');
+        if (summaryField) summaryField.value = parts.join('; ');
       }
-    });
-    const summaryField = document.getElementById('building_occupancy_summary');
-    if (summaryField) summaryField.value = parts.join('; ');
-  }
 
-  function showErr(li, msg) {
-    let el = li.querySelector('.validation-error');
-    if (!el) { el = document.createElement('span'); el.className = 'validation-error'; li.appendChild(el); }
-    el.textContent = msg;
-  }
-  function hideErr(li) {
-    const el = li.querySelector('.validation-error');
-    if (el) el.remove();
-  }
+      function showErr(li, msg) {
+        let el = li.querySelector('.validation-error');
+        if (!el) { el = document.createElement('span'); el.className = 'validation-error'; li.appendChild(el); }
+        el.textContent = msg;
+      }
+      function hideErr(li) {
+        const el = li.querySelector('.validation-error');
+        if (el) el.remove();
+      }
 
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      const container = document.querySelector(containerSel);
-      if (!container) return;
-      let ok = true;
-      container.querySelectorAll(':scope .hs-form-checkbox').forEach(li => {
-        const cb = li.querySelector(':scope > label input[type="checkbox"]');
-        const radios = li.querySelectorAll('.radio-group input[type="radio"]');
-        const anyRadio = Array.from(radios).some(r => r.checked);
-        if (cb && cb.checked && radios.length && !anyRadio) {
-          ok = false;
-          showErr(li, 'Please select at least one option.');
-        }
-      });
-      if (!ok) {
-        e.preventDefault();
-        const dd = container.closest('.dropdown');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          const container = document.querySelector(containerSel);
+          if (!container) return;
+          let ok = true;
+          container.querySelectorAll(':scope .hs-form-checkbox').forEach(li => {
+            const cb = li.querySelector(':scope > label input[type="checkbox"]');
+            const radios = li.querySelectorAll('.radio-group input[type="radio"]');
+            const anyRadio = Array.from(radios).some(r => r.checked);
+            if (cb && cb.checked && radios.length && !anyRadio) {
+              ok = false;
+              showErr(li, 'Please select at least one option.');
+            }
+          });
+          if (!ok) {
+            e.preventDefault();
+            const dd = container.closest('.dropdown');
+            if (dd) {
+              dd.setAttribute('aria-expanded', 'true');
+              dd.querySelector('.dropdown__button')?.setAttribute('aria-expanded', 'true');
+              dd.querySelector('.dropdown__panel').hidden = false;
+            }
+          } else {
+            updateSummary();
+          }
+        });
+      }
+
+      updateSummary();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const containerSel = '.hs_building_occupancy_type';
+      const form = document.querySelector('#hsForm_b1918b8e-61ec-4407-94bd-8c949ebc59a4') || document.querySelector('form');
+
+      function updateSummary() {
+        const container = document.querySelector(containerSel);
+        if (!container) return;
+        const groups = container.querySelectorAll(':scope .hs-form-checkbox');
+        const parts = [];
+        groups.forEach(li => {
+          const cb = li.querySelector(':scope > label input[type="checkbox"]');
+          const label = li.querySelector(':scope > label span')?.textContent?.trim() || '';
+          if (!cb || !cb.checked) return;
+          const selRadios = li.querySelectorAll('.radio-group input[type="radio"]:checked');
+          if (selRadios.length) {
+            const rtxt = Array.from(selRadios).map(r => r.nextElementSibling?.textContent?.trim() || '').join(', ');
+            parts.push(`${label}: ${rtxt}`);
+          } else {
+            parts.push(label);
+          }
+        });
+        const summaryField = document.getElementById('building_occupancy_summary');
+        if (summaryField) summaryField.value = parts.join('; ');
+      }
+
+      function showErr(li, msg) {
+        let el = li.querySelector('.validation-error');
+        if (!el) { el = document.createElement('span'); el.className = 'validation-error'; li.appendChild(el); }
+        el.textContent = msg;
+
+        // ensure dropdown is open so the user can see it
+        const dd = li.closest('.dropdown');
         if (dd) {
           dd.setAttribute('aria-expanded', 'true');
-          dd.querySelector('.dropdown__button')?.setAttribute('aria-expanded','true');
-          dd.querySelector('.dropdown__panel').hidden = false;
+          dd.querySelector('.dropdown__button')?.setAttribute('aria-expanded', 'true');
+          const panel = dd.querySelector('.dropdown__panel');
+          if (panel) panel.hidden = false;
         }
-      } else {
-        updateSummary();
-      }
-    });
-  }
-
-  updateSummary();
-})();
-</script>
-
-<script>
-(function () {
-  const containerSel = '.hs_building_occupancy_type';
-  const form = document.querySelector('#hsForm_b1918b8e-61ec-4407-94bd-8c949ebc59a4') || document.querySelector('form');
-
-  function updateSummary() {
-    const container = document.querySelector(containerSel);
-    if (!container) return;
-    const groups = container.querySelectorAll(':scope .hs-form-checkbox');
-    const parts = [];
-    groups.forEach(li => {
-      const cb = li.querySelector(':scope > label input[type="checkbox"]');
-      const label = li.querySelector(':scope > label span')?.textContent?.trim() || '';
-      if (!cb || !cb.checked) return;
-      const selRadios = li.querySelectorAll('.radio-group input[type="radio"]:checked');
-      if (selRadios.length) {
-        const rtxt = Array.from(selRadios).map(r => r.nextElementSibling?.textContent?.trim() || '').join(', ');
-        parts.push(`${label}: ${rtxt}`);
-      } else {
-        parts.push(label);
-      }
-    });
-    const summaryField = document.getElementById('building_occupancy_summary');
-    if (summaryField) summaryField.value = parts.join('; ');
-  }
-
-  function showErr(li, msg) {
-    let el = li.querySelector('.validation-error');
-    if (!el) { el = document.createElement('span'); el.className = 'validation-error'; li.appendChild(el); }
-    el.textContent = msg;
-
-    // ensure dropdown is open so the user can see it
-    const dd = li.closest('.dropdown');
-    if (dd) {
-      dd.setAttribute('aria-expanded', 'true');
-      dd.querySelector('.dropdown__button')?.setAttribute('aria-expanded','true');
-      const panel = dd.querySelector('.dropdown__panel');
-      if (panel) panel.hidden = false;
-    }
-  }
-
-  function hideErr(li) {
-    const el = li.querySelector('.validation-error');
-    if (el) el.remove();
-  }
-
-  document.addEventListener('change', (e) => {
-    // Checkbox toggles its radio-group and validates immediately
-    if (e.target.matches('.hs-form-checkbox > label > input[type="checkbox"]')) {
-      const li = e.target.closest('.hs-form-checkbox');
-      const rg = li.querySelector('.radio-group');
-      if (rg) {
-        rg.style.display = e.target.checked ? 'block' : 'none';
-        if (!e.target.checked) rg.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
       }
 
-      // immediate validation for groups that have radios
-      const hasRadios = !!li.querySelector('.radio-group input[type="radio"]');
-      const anyRadio = !!li.querySelector('.radio-group input[type="radio"]:checked');
-      if (e.target.checked && hasRadios && !anyRadio) {
-        showErr(li, 'Please select at least one option.');
-      } else {
-        hideErr(li);
+      function hideErr(li) {
+        const el = li.querySelector('.validation-error');
+        if (el) el.remove();
       }
 
-      updateSummary();
-      return;
-    }
+      document.addEventListener('change', (e) => {
+        // Checkbox toggles its radio-group and validates immediately
+        if (e.target.matches('.hs-form-checkbox > label > input[type="checkbox"]')) {
+          const li = e.target.closest('.hs-form-checkbox');
+          const rg = li.querySelector('.radio-group');
+          if (rg) {
+            rg.style.display = e.target.checked ? 'block' : 'none';
+            if (!e.target.checked) rg.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+          }
 
-    // Radio ensures parent checkbox is checked & clears error
-    if (e.target.matches('.radio-group input[type="radio"]')) {
-      const li = e.target.closest('.hs-form-checkbox');
-      const parentCheckbox = li?.querySelector(':scope > label input[type="checkbox"]');
-      if (parentCheckbox && !parentCheckbox.checked) {
-        parentCheckbox.checked = true;
-        parentCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-      hideErr(li);
-      updateSummary();
-    }
-  });
+          // immediate validation for groups that have radios
+          const hasRadios = !!li.querySelector('.radio-group input[type="radio"]');
+          const anyRadio = !!li.querySelector('.radio-group input[type="radio"]:checked');
+          if (e.target.checked && hasRadios && !anyRadio) {
+            showErr(li, 'Please select at least one option.');
+          } else {
+            hideErr(li);
+          }
 
-  // Keep submit validation (fallback)
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      const container = document.querySelector(containerSel);
-      if (!container) return;
-      let ok = true;
-      container.querySelectorAll(':scope .hs-form-checkbox').forEach(li => {
-        const cb = li.querySelector(':scope > label input[type="checkbox"]');
-        const radios = li.querySelectorAll('.radio-group input[type="radio"]');
-        const anyRadio = Array.from(radios).some(r => r.checked);
-        if (cb && cb.checked && radios.length && !anyRadio) {
-          ok = false;
-          showErr(li, 'Please select at least one option.');
+          updateSummary();
+          return;
+        }
+
+        // Radio ensures parent checkbox is checked & clears error
+        if (e.target.matches('.radio-group input[type="radio"]')) {
+          const li = e.target.closest('.hs-form-checkbox');
+          const parentCheckbox = li?.querySelector(':scope > label input[type="checkbox"]');
+          if (parentCheckbox && !parentCheckbox.checked) {
+            parentCheckbox.checked = true;
+            parentCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          hideErr(li);
+          updateSummary();
         }
       });
-      if (!ok) {
-        e.preventDefault();
-      } else {
-        updateSummary();
-      }
-    });
-  }
 
-  updateSummary();
-})();
-</script>
-
-<script>
-  (function () {
-    // CONFIG: map option values to images (use your own image URLs)
-    const OPTIONS = [
-      {
-        value: 'Individual Pathway (Free Air)',
-        title: 'Individual Pathway',
-        hint: 'Free Air',
-        img: 'https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/image%20985.png',   // TODO: replace
-        alt: 'Cables run individually in free air'
-      },
-      {
-        value: 'Shared Pathway (Conduit)',
-        title: 'Shared Pathway',
-        hint: 'Conduit',
-        img: 'https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/image%20986.png',    // TODO: replace
-        alt: 'Multiple cables run together in conduit'
+      // Keep submit validation (fallback)
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          const container = document.querySelector(containerSel);
+          if (!container) return;
+          let ok = true;
+          container.querySelectorAll(':scope .hs-form-checkbox').forEach(li => {
+            const cb = li.querySelector(':scope > label input[type="checkbox"]');
+            const radios = li.querySelectorAll('.radio-group input[type="radio"]');
+            const anyRadio = Array.from(radios).some(r => r.checked);
+            if (cb && cb.checked && radios.length && !anyRadio) {
+              ok = false;
+              showErr(li, 'Please select at least one option.');
+            }
+          });
+          if (!ok) {
+            e.preventDefault();
+          } else {
+            updateSummary();
+          }
+        });
       }
-    ];
-  
-    // Prefer the provided ID; fall back to name selector if HubSpot ever regenerates the id.
-    const SELECTOR = '#how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4, select[name="how_would_you_like_us_to_show_wiring_pathways_"]';
-  
-    function enhancePathwaySelect(select) {
-      if (!select || select.__enhanced) return;
-      select.__enhanced = true;
-  
-      // Mark so we can style/hide it
-      select.classList.add('hs-pathway-select', 'is-visually-hidden');
-  
-      // Container right after the select's label/div
-      const wrapper = select.closest('.hs-form-field') || select.parentElement;
-      const inputDiv = wrapper.querySelector('.input') || wrapper;
-  
-      // Create picker container
-      const picker = document.createElement('div');
-      picker.className = 'pathway-picker';
-      picker.setAttribute('role', 'listbox');
-      picker.setAttribute('aria-label', 'How would you like us to show wiring pathways?');
-      picker.tabIndex = 0; // focus container for arrow key nav
-  
-      // Optional inline error holder
-      const err = document.createElement('div');
-      err.className = 'pathway-error';
-      err.textContent = 'Please choose one option.';
-  
-      // Build cards
-      OPTIONS.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'pathway-card';
-        btn.setAttribute('role', 'option');
-        btn.setAttribute('data-value', opt.value);
-        btn.setAttribute('aria-selected', 'false');
-        btn.setAttribute('data-selected', 'false');
-  
-        // Card content
-        btn.innerHTML = `
+
+      updateSummary();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      // CONFIG: map option values to images (use your own image URLs)
+      const OPTIONS = [
+        {
+          value: 'Individual Pathway (Free Air)',
+          title: 'Individual Pathway',
+          hint: 'Free Air',
+          img: 'https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/image%20985.png',   // TODO: replace
+          alt: 'Cables run individually in free air'
+        },
+        {
+          value: 'Shared Pathway (Conduit)',
+          title: 'Shared Pathway',
+          hint: 'Conduit',
+          img: 'https://20661566.fs1.hubspotusercontent-na1.net/hubfs/20661566/image%20986.png',    // TODO: replace
+          alt: 'Multiple cables run together in conduit'
+        }
+      ];
+
+      // Prefer the provided ID; fall back to name selector if HubSpot ever regenerates the id.
+      const SELECTOR = '#how_would_you_like_us_to_show_wiring_pathways_-b1918b8e-61ec-4407-94bd-8c949ebc59a4, select[name="how_would_you_like_us_to_show_wiring_pathways_"]';
+
+      function enhancePathwaySelect(select) {
+        if (!select || select.__enhanced) return;
+        select.__enhanced = true;
+
+        // Mark so we can style/hide it
+        select.classList.add('hs-pathway-select', 'is-visually-hidden');
+
+        // Container right after the select's label/div
+        const wrapper = select.closest('.hs-form-field') || select.parentElement;
+        const inputDiv = wrapper.querySelector('.input') || wrapper;
+
+        // Create picker container
+        const picker = document.createElement('div');
+        picker.className = 'pathway-picker';
+        picker.setAttribute('role', 'listbox');
+        picker.setAttribute('aria-label', 'How would you like us to show wiring pathways?');
+        picker.tabIndex = 0; // focus container for arrow key nav
+
+        // Optional inline error holder
+        const err = document.createElement('div');
+        err.className = 'pathway-error';
+        err.textContent = 'Please choose one option.';
+
+        // Build cards
+        OPTIONS.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'pathway-card';
+          btn.setAttribute('role', 'option');
+          btn.setAttribute('data-value', opt.value);
+          btn.setAttribute('aria-selected', 'false');
+          btn.setAttribute('data-selected', 'false');
+
+          // Card content
+          btn.innerHTML = `
           <img class="pathway-card__img" src="${opt.img}" alt="${opt.alt}">
           <div class="pathway-card__title">${opt.title}</div>
           <div class="pathway-card__hint">${opt.hint}</div>
         `;
-  
-        // Mouse/touch
-        btn.addEventListener('click', () => selectValue(opt.value, true));
-  
-        // Keyboard on the button itself
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectValue(opt.value, true); }
+
+          // Mouse/touch
+          btn.addEventListener('click', () => selectValue(opt.value, true));
+
+          // Keyboard on the button itself
+          btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectValue(opt.value, true); }
+          });
+
+          picker.appendChild(btn);
         });
-  
-        picker.appendChild(btn);
-      });
-  
-      // Insert UI just after the native field
-      inputDiv.appendChild(picker);
-      inputDiv.appendChild(err);
-  
-      // Selection helpers
-      function reflectUI(value) {
-        picker.querySelectorAll('.pathway-card').forEach(el => {
-          const isSel = el.getAttribute('data-value') === value && value !== '';
-          el.setAttribute('aria-selected', isSel ? 'true' : 'false');
-          el.setAttribute('data-selected', isSel ? 'true' : 'false');
-        });
-      }
-  
-      function selectValue(value, userAction = false) {
-        // Update native select (so HubSpot gets the right value)
-        select.value = value;
-        reflectUI(value);
-  
-        // Clear error if any
-        err.classList.remove('is-visible');
-  
-        // Dispatch change so any HubSpot dependent logic runs
-        const ev = new Event('change', { bubbles: true });
-        select.dispatchEvent(ev);
-  
-        // If user clicked/pressed, move focus onward for better flow
-        if (userAction) {
-          // try to move focus to next focusable control in this step
-          const all = Array.from(document.querySelectorAll('input, select, textarea, button, [tabindex]:not([tabindex="-1"])'));
-          const idx = all.indexOf(picker);
-          if (idx > -1 && all[idx + 1]) all[idx + 1].focus();
+
+        // Insert UI just after the native field
+        inputDiv.appendChild(picker);
+        inputDiv.appendChild(err);
+
+        // Selection helpers
+        function reflectUI(value) {
+          picker.querySelectorAll('.pathway-card').forEach(el => {
+            const isSel = el.getAttribute('data-value') === value && value !== '';
+            el.setAttribute('aria-selected', isSel ? 'true' : 'false');
+            el.setAttribute('data-selected', isSel ? 'true' : 'false');
+          });
         }
-      }
-  
-      // Initialize from any preselected value (e.g., back/forward nav)
-      reflectUI(select.value);
-  
-      // If HubSpot sets required, mirror a bit of inline error on submit
-      const form = select.closest('form');
-      if (form) {
-        form.addEventListener('submit', () => {
-          const required = wrapper.querySelector('.hs-form-required');
-          if (required && !select.value) {
-            err.classList.add('is-visible');
-            // ensure any collapsible parents are open (you already do this for other sections)
-          } else {
-            err.classList.remove('is-visible');
+
+        function selectValue(value, userAction = false) {
+          // Update native select (so HubSpot gets the right value)
+          select.value = value;
+          reflectUI(value);
+
+          // Clear error if any
+          err.classList.remove('is-visible');
+
+          // Dispatch change so any HubSpot dependent logic runs
+          const ev = new Event('change', { bubbles: true });
+          select.dispatchEvent(ev);
+
+          // If user clicked/pressed, move focus onward for better flow
+          if (userAction) {
+            // try to move focus to next focusable control in this step
+            const all = Array.from(document.querySelectorAll('input, select, textarea, button, [tabindex]:not([tabindex="-1"])'));
+            const idx = all.indexOf(picker);
+            if (idx > -1 && all[idx + 1]) all[idx + 1].focus();
           }
-        });
-      }
-  
-      // Arrow-key nav when container has focus
-      picker.addEventListener('keydown', (e) => {
-        const cards = Array.from(picker.querySelectorAll('.pathway-card'));
-        const curIdx = cards.findIndex(c => c.getAttribute('data-selected') === 'true');
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          const next = cards[(Math.max(curIdx, -1) + 1) % cards.length];
-          next.focus();
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          const prev = cards[(curIdx > 0 ? curIdx : cards.length) - 1];
-          prev.focus();
-        } else if (e.key === 'Enter' || e.key === ' ') {
-          // select the focused card
-          const active = document.activeElement?.closest('.pathway-card');
-          if (active) {
+        }
+
+        // Initialize from any preselected value (e.g., back/forward nav)
+        reflectUI(select.value);
+
+        // If HubSpot sets required, mirror a bit of inline error on submit
+        const form = select.closest('form');
+        if (form) {
+          form.addEventListener('submit', () => {
+            const required = wrapper.querySelector('.hs-form-required');
+            if (required && !select.value) {
+              err.classList.add('is-visible');
+              // ensure any collapsible parents are open (you already do this for other sections)
+            } else {
+              err.classList.remove('is-visible');
+            }
+          });
+        }
+
+        // Arrow-key nav when container has focus
+        picker.addEventListener('keydown', (e) => {
+          const cards = Array.from(picker.querySelectorAll('.pathway-card'));
+          const curIdx = cards.findIndex(c => c.getAttribute('data-selected') === 'true');
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
             e.preventDefault();
-            selectValue(active.getAttribute('data-value'), true);
+            const next = cards[(Math.max(curIdx, -1) + 1) % cards.length];
+            next.focus();
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = cards[(curIdx > 0 ? curIdx : cards.length) - 1];
+            prev.focus();
+          } else if (e.key === 'Enter' || e.key === ' ') {
+            // select the focused card
+            const active = document.activeElement?.closest('.pathway-card');
+            if (active) {
+              e.preventDefault();
+              selectValue(active.getAttribute('data-value'), true);
+            }
+          } else if (e.key === 'Escape') {
+            picker.blur();
           }
-        } else if (e.key === 'Escape') {
-          picker.blur();
-        }
-      });
-    }
-  
-    // Wait for HubSpot to inject the field, then enhance it
-    const tryEnhance = () => {
-      const select = document.querySelector(SELECTOR);
-      if (select) enhancePathwaySelect(select);
-    };
-  
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', tryEnhance);
-    } else {
-      tryEnhance();
-    }
-  
-    const mo = new MutationObserver(tryEnhance);
-    mo.observe(document.documentElement, { childList: true, subtree: true });
-  })();
-  </script>  
+        });
+      }
+
+      // Wait for HubSpot to inject the field, then enhance it
+      const tryEnhance = () => {
+        const select = document.querySelector(SELECTOR);
+        if (select) enhancePathwaySelect(select);
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryEnhance);
+      } else {
+        tryEnhance();
+      }
+
+      const mo = new MutationObserver(tryEnhance);
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+    })();
+  </script>
 
 
 </body>
+
 </html>
-
-
