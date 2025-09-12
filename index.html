@@ -1661,6 +1661,155 @@
   });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Função para alterar o valor do campo de preço com base na escolha do número de dispositivos
+    function updateTakeOffPrice() {
+        var projectSizeSelect = document.getElementById('project_size-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+        var takeOffPriceInput = document.getElementById('take_off_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+
+        // Verificar se ambos os elementos existem antes de tentar manipular
+        if (projectSizeSelect && takeOffPriceInput) {
+            var selectedValue = projectSizeSelect.value; // Obter o valor selecionado
+
+            // Exemplo de lógica de atualização de valor com base na seleção
+            if (selectedValue === "up to 50k SQ FT") {
+                takeOffPriceInput.value = "500";
+            } else if (selectedValue === "51k to 100k SQ FT") {
+                takeOffPriceInput.value = "750";
+            } else if (selectedValue === "101k to 200k SQ FT") {
+                takeOffPriceInput.value = "1400";
+            } else if (selectedValue === "201k up to 500k SQ FT") {
+                takeOffPriceInput.value = "2500";
+            } else {
+                takeOffPriceInput.value = "";
+            }
+        }
+    }
+
+    // Função para alterar o valor do campo de preço do design com base no número de dispositivos
+    function updateDesignPrice() {
+    var totalNumberOfDevices = document.getElementById('total_number_of_devices-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+    var designPrice = document.getElementById('design_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+
+    // Tabela de preços baseada no número de dispositivos
+    const priceTable = {
+        25: "780.00",
+        50: "1170.00",
+        100: "1404.00",
+        150: "1638.00",
+        200: "1872.00",
+        250: "2316.60",
+        300: "2574.00",
+        350: "2831.40",
+        400: "3088.80",
+        450: "3346.20",
+        500: "3603.60",
+        550: "3861.00",
+        600: "4118.40",
+        650: "4375.80",
+        700: "4633.20",
+        750: "4890.60",
+        800: "5148.00",
+        850: "5405.40",
+        900: "5662.80",
+        950: "5920.20",
+        1000: "6177.60",
+        1050: "6435.00",
+        1100: "6692.40",
+        1150: "6949.80",
+        1200: "7207.20",
+        1250: "7464.60",
+        1300: "7722.00",
+        1350: "7979.40",
+        1400: "8236.80",
+        1450: "8494.20",
+        1500: "8751.60",
+        1550: "9009.00",
+        1600: "9266.40",
+        1650: "9523.80",
+        1700: "9781.20",
+        1750: "10038.60",
+        1800: "10296.00",
+        1850: "10553.40",
+        1900: "10810.80",
+        1950: "11068.20",
+        2000: "11325.60",
+        2050: "11583.00",
+        2100: "11840.40",
+        2150: "12097.80",
+        2200: "12355.20",
+        2250: "12612.60",
+        2300: "12870.00",
+        2350: "13127.40",
+        2400: "13384.80",
+        2450: "13642.20",
+        2500: "13899.60",
+        2550: "14157.00",
+        2600: "14414.40",
+        2650: "14671.80",
+        2700: "14929.20",
+        2750: "15186.60",
+        2800: "15444.00",
+        2850: "15701.40",
+        2900: "15958.80",
+        2950: "16216.20",
+        3000: "16473.60"
+    };
+
+    if (totalNumberOfDevices && designPrice) {
+        let selectedValue = parseInt(totalNumberOfDevices.value, 10);
+
+        if (isNaN(selectedValue) || selectedValue <= 0) {
+            designPrice.value = "";
+            return;
+        }
+
+        // Transformar as chaves da tabela em array e ordenar
+        const keys = Object.keys(priceTable).map(Number).sort((a, b) => a - b);
+
+        // Encontrar o menor número na tabela maior ou igual ao valor selecionado
+        let matchedKey = keys.find(key => selectedValue <= key);
+
+        // Se o valor for maior que o maior da tabela, pegar o maior
+        if (!matchedKey) {
+            matchedKey = keys[keys.length - 1];
+        }
+
+        // Atualizar o preço
+        designPrice.value = priceTable[matchedKey];
+    }
+}
+
+
+    // Configuração do MutationObserver para observar mudanças no DOM
+    const observer = new MutationObserver(function(mutationsList, observer) {
+        // Verifica se os elementos foram carregados
+        const projectSizeSelect = document.getElementById('project_size-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+        const takeOffPriceInput = document.getElementById('take_off_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+        const totalNumberOfDevices = document.getElementById('total_number_of_devices-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+        const designPrice = document.getElementById('design_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+
+        // Se todos os elementos estão presentes, parar de observar e aplicar a lógica
+        if (projectSizeSelect && takeOffPriceInput && totalNumberOfDevices && designPrice) {
+            // Adiciona o ouvinte de evento para o select de "project_size"
+            projectSizeSelect.addEventListener('change', updateTakeOffPrice);
+            totalNumberOfDevices.addEventListener('change', updateDesignPrice);
+
+            // Atualiza os valores iniciais dos campos
+            updateTakeOffPrice();
+            updateDesignPrice();
+
+            // Para o observador, pois já encontramos os elementos
+            observer.disconnect();
+        }
+    });
+
+    // Inicia o observador para monitorar as mudanças no body da página
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
+
 
 
 <script>
@@ -1679,7 +1828,9 @@
                     section.querySelector('#scope0-b1918b8e-61ec-4407-94bd-8c949ebc59a4'), // Radio button 1
                     section.querySelector('#scope1-b1918b8e-61ec-4407-94bd-8c949ebc59a4'), // Radio button 2
                     section.querySelector('#what_is_the_due_date_for_submission_-b1918b8e-61ec-4407-94bd-8c949ebc59a4'), // Date field
-                    section.querySelector('#po_number-b1918b8e-61ec-4407-94bd-8c949ebc59a4') // PO Number field
+                    section.querySelector('#po_number-b1918b8e-61ec-4407-94bd-8c949ebc59a4'), // PO Number field
+                    section.querySelector('#project_size-b1918b8e-61ec-4407-94bd-8c949ebc59a4') // PO Number field
+
                 ];
 
                 // Função para adicionar o asterisco vermelho diretamente nas labels dos campos obrigatórios
@@ -1700,6 +1851,15 @@
                         asterisk.style.color = 'red';
                         asterisk.textContent = '*';
                         dueDateLabel.appendChild(asterisk); // Adiciona o asterisco diretamente na label
+                    }
+
+                     // Asterisco vermelho para 'What is the due date for submission?'
+                    const projectSizeLabel = document.querySelector('#label-project_size-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+                    if (projectSizeLabel && !projectSizeLabel.querySelector('span[style="color: red;"]')) {
+                        const asterisk = document.createElement('span');
+                        asterisk.style.color = 'red';
+                        asterisk.textContent = '*';
+                        projectSizeLabel.appendChild(asterisk); // Adiciona o asterisco diretamente na label
                     }
 
                     // Asterisco vermelho para 'PO Number'
