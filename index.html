@@ -784,7 +784,7 @@
             type: 'input'
           },
           {
-            selector: 'input[name="take_off_price"]',
+            selector: 'input[name="take_off_price_calc"]',
             type: 'input'
           },
           {
@@ -1457,12 +1457,12 @@
 
   <script>
     const waitInterval1 = setInterval(() => {
-      const takeOffPriceInput = document.querySelector('input[name="take_off_price"]');
+      const takeOffPriceInput = document.querySelector('input[name="take_off_price_calc"]');
       if (takeOffPriceInput) {
         takeOffPriceInput.disabled = true;
         clearInterval(waitInterval1);
       }
-      const designPriceInput = document.querySelector('input[name="design_price"]');
+      const designPriceInput = document.querySelector('input[name="design_price_calc"]');
       if (designPriceInput) {
         designPriceInput.disabled = true;
         clearInterval(waitInterval1);
@@ -1666,7 +1666,7 @@
     // Função para alterar o valor do campo de preço com base na escolha do número de dispositivos
     function updateTakeOffPrice() {
         var projectSizeSelect = document.getElementById('project_size-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
-        var takeOffPriceInput = document.getElementById('take_off_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+        var takeOffPriceInput = document.getElementById('take_off_price_calc-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
 
         // Verificar se ambos os elementos existem antes de tentar manipular
         if (projectSizeSelect && takeOffPriceInput) {
@@ -1674,13 +1674,13 @@
 
             // Exemplo de lógica de atualização de valor com base na seleção
             if (selectedValue === "up to 50k SQ FT") {
-                takeOffPriceInput.value = "500";
+                takeOffPriceInput.value = "$500.00";
             } else if (selectedValue === "51k to 100k SQ FT") {
-                takeOffPriceInput.value = "750";
+                takeOffPriceInput.value = "$750.00";
             } else if (selectedValue === "101k to 200k SQ FT") {
-                takeOffPriceInput.value = "1400";
+                takeOffPriceInput.value = "$1,400.00";
             } else if (selectedValue === "201k up to 500k SQ FT") {
-                takeOffPriceInput.value = "2500";
+                takeOffPriceInput.value = "$2,500.00";
             } else {
                 takeOffPriceInput.value = "";
             }
@@ -1690,71 +1690,71 @@
     // Função para alterar o valor do campo de preço do design com base no número de dispositivos
     function updateDesignPrice() {
     var totalNumberOfDevices = document.getElementById('total_number_of_devices-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
-    var designPrice = document.getElementById('design_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+    var designPrice = document.getElementById('design_price_calc-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
 
     // Tabela de preços baseada no número de dispositivos
     const priceTable = {
-        25: "780.00",
-        50: "1170.00",
-        100: "1404.00",
-        150: "1638.00",
-        200: "1872.00",
-        250: "2316.60",
-        300: "2574.00",
-        350: "2831.40",
-        400: "3088.80",
-        450: "3346.20",
-        500: "3603.60",
-        550: "3861.00",
-        600: "4118.40",
-        650: "4375.80",
-        700: "4633.20",
-        750: "4890.60",
-        800: "5148.00",
-        850: "5405.40",
-        900: "5662.80",
-        950: "5920.20",
-        1000: "6177.60",
-        1050: "6435.00",
-        1100: "6692.40",
-        1150: "6949.80",
-        1200: "7207.20",
-        1250: "7464.60",
-        1300: "7722.00",
-        1350: "7979.40",
-        1400: "8236.80",
-        1450: "8494.20",
-        1500: "8751.60",
-        1550: "9009.00",
-        1600: "9266.40",
-        1650: "9523.80",
-        1700: "9781.20",
-        1750: "10038.60",
-        1800: "10296.00",
-        1850: "10553.40",
-        1900: "10810.80",
-        1950: "11068.20",
-        2000: "11325.60",
-        2050: "11583.00",
-        2100: "11840.40",
-        2150: "12097.80",
-        2200: "12355.20",
-        2250: "12612.60",
-        2300: "12870.00",
-        2350: "13127.40",
-        2400: "13384.80",
-        2450: "13642.20",
-        2500: "13899.60",
-        2550: "14157.00",
-        2600: "14414.40",
-        2650: "14671.80",
-        2700: "14929.20",
-        2750: "15186.60",
-        2800: "15444.00",
-        2850: "15701.40",
-        2900: "15958.80",
-        2950: "16216.20",
-        3000: "16473.60"
+        25: "$780.00",
+        50: "$1,170.00",
+        100: "$1,404.00",
+        150: "$1,638.00",
+        200: "$1,872.00",
+        250: "$2,316.60",
+        300: "$2,574.00",
+        350: "$2,831.40",
+        400: "$3,088.80",
+        450: "$3,346.20",
+        500: "$3,603.60",
+        550: "$3,861.00",
+        600: "$4,118.40",
+        650: "$4,375.80",
+        700: "$4,633.20",
+        750: "$4,890.60",
+        800: "$5,148.00",
+        850: "$5,405.40",
+        900: "$5,662.80",
+        950: "$5,920.20",
+        1000: "$6,177.60",
+        1050: "$6,435.00",
+        1100: "$6,692.40",
+        1150: "$6,949.80",
+        1200: "$7,207.20",
+        1250: "$7,464.60",
+        1300: "$7,722.00",
+        1350: "$7,979.40",
+        1400: "$8,236.80",
+        1450: "$8,494.20",
+        1500: "$8,751.60",
+        1550: "$9,009.00",
+        1600: "$9,266.40",
+        1650: "$9,523.80",
+        1700: "$9,781.20",
+        1750: "$10,038.60",
+        1800: "$10,296.00",
+        1850: "$10,553.40",
+        1900: "$10,810.80",
+        1950: "$11,068.20",
+        2000: "$11,325.60",
+        2050: "$11,583.00",
+        2100: "$11,840.40",
+        2150: "$12,097.80",
+        2200: "$12,355.20",
+        2250: "$12,612.60",
+        2300: "$12,870.00",
+        2350: "$13,127.40",
+        2400: "$13,384.80",
+        2450: "$13,642.20",
+        2500: "$13,899.60",
+        2550: "$14,157.00",
+        2600: "$14,414.40",
+        2650: "$14,671.80",
+        2700: "$14,929.20",
+        2750: "$15,186.60",
+        2800: "$15,444.00",
+        2850: "$15,701.40",
+        2900: "$15,958.80",
+        2950: "$16,216.20",
+        3000: "$16,473.60"
     };
 
     if (totalNumberOfDevices && designPrice) {
@@ -1786,9 +1786,9 @@
     const observer = new MutationObserver(function(mutationsList, observer) {
         // Verifica se os elementos foram carregados
         const projectSizeSelect = document.getElementById('project_size-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
-        const takeOffPriceInput = document.getElementById('take_off_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+        const takeOffPriceInput = document.getElementById('take_off_price_calc-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
         const totalNumberOfDevices = document.getElementById('total_number_of_devices-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
-        const designPrice = document.getElementById('design_price-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
+        const designPrice = document.getElementById('design_price_calc-b1918b8e-61ec-4407-94bd-8c949ebc59a4');
 
         // Se todos os elementos estão presentes, parar de observar e aplicar a lógica
         if (projectSizeSelect && takeOffPriceInput && totalNumberOfDevices && designPrice) {
